@@ -1,0 +1,20 @@
+/.bundle/
+/.yardoc
+/Gemfile.lock
+/_yardoc/
+/coverage/
+/doc/
+/pkg/
+/spec/reports/
+/tmp/
+/bin/
+
+# rspec failure tracking
+.rspec_status
+
+*.swp
+*.bundle
+mkmf.log
+tags
+.DS_Store
+.ruby-version
