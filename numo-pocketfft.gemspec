@@ -23,6 +23,17 @@ Gem::Specification.new do |spec|
     `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   end
 
+  # Add files in submodule: https://gist.github.com/mattconnolly/5875987
+  gem_dir = __dir__ + '/'
+  `git submodule --quiet foreach pwd`.split($OUTPUT_RECORD_SEPARATOR).each do |submodule_path|
+    Dir.chdir(submodule_path) do
+      submodule_relative_path = submodule_path.sub gem_dir, ''
+      `git ls-files`.split($OUTPUT_RECORD_SEPARATOR).each do |filename|
+        spec.files << "#{submodule_relative_path}/#{filename}"
+      end
+    end
+  end
+
   spec.require_paths = ['lib']
   spec.extensions    = ['ext/numo/pocketfft/extconf.rb']
 
