@@ -40,6 +40,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'numo-narray', '~> 0.9.1'
 
   spec.add_development_dependency 'bundler', '~> 2.0'
+  spec.add_development_dependency 'coveralls', '~> 0.8'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rake-compiler', '~> 1.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
