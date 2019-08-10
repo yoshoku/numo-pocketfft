@@ -40,14 +40,18 @@ module Numo
     # @param a [Numo::DComplex] input array
     # @return [Numo::DComplex]
     def fftn(a)
-      raw_fftnd(a, inverse: false, real: false)
+      b = a.dup
+      (0...b.ndim).to_a.reverse.each { |ax_id| b = raw_fft(b, ax_id, inverse: false, real: false) }
+      b
     end
 
     # Compute the N-dimensional inverse discrete Fourier Transform.
     # @param a [Numo::DComplex] input array
     # @return [Numo::DComplex]
     def ifftn(a)
-      raw_fftnd(a, inverse: true, real: false)
+      b = a.dup
+      (0...b.ndim).to_a.each { |ax_id| b = raw_fft(b, ax_id, inverse: true, real: false) }
+      b
     end
 
     # Compute the 1-dimensional discrete Fourier Transform for real input.
@@ -84,7 +88,7 @@ module Numo
     def rfftn(a)
       last_axis_id = a.ndim - 1
       b = raw_fft(a, last_axis_id, inverse: false, real: true)
-      (0...last_axis_id).to_a.reverse.each { |it| b = raw_fft(b, it, inverse: false, real: false) }
+      (0...last_axis_id).to_a.reverse.each { |ax_id| b = raw_fft(b, ax_id, inverse: false, real: false) }
       b
     end
 
@@ -94,7 +98,7 @@ module Numo
     def irfftn(a)
       last_axis_id = a.ndim - 1
       b = a.dup
-      (0...last_axis_id).to_a.each { |it| b = raw_fft(b, it, inverse: true, real: false) }
+      (0...last_axis_id).to_a.each { |ax_id| b = raw_fft(b, ax_id, inverse: true, real: false) }
       raw_fft(b, last_axis_id, inverse: true, real: true)
     end
 
@@ -124,29 +128,14 @@ module Numo
           end
         end
       else
-        if real
-          if inverse
-            ext_irfft(a.swapaxes(axis_id, -1)).swapaxes(axis_id, -1).dup
-          else
-            ext_rfft(a.swapaxes(axis_id, -1)).swapaxes(axis_id, -1).dup
-          end
+        if inverse
+          ext_icfft(a.swapaxes(axis_id, -1)).swapaxes(axis_id, -1).dup
         else
-          if inverse
-            ext_icfft(a.swapaxes(axis_id, -1)).swapaxes(axis_id, -1).dup
-          else
-            ext_cfft(a.swapaxes(axis_id, -1)).swapaxes(axis_id, -1).dup
-          end
+          ext_cfft(a.swapaxes(axis_id, -1)).swapaxes(axis_id, -1).dup
         end
       end
     end
 
-    # @!visibility private
-    def raw_fftnd(a, inverse:, real:)
-      b = a.dup
-      (0...b.ndim).to_a.reverse.each { |it| b = raw_fft(b, it, inverse: inverse, real: real) }
-      b
-    end
-
-    private_class_method :ext_cfft, :ext_icfft, :ext_rfft, :ext_irfft, :raw_fft, :raw_fftnd
+    private_class_method :ext_cfft, :ext_icfft, :ext_rfft, :ext_irfft, :raw_fft
   end
 end
