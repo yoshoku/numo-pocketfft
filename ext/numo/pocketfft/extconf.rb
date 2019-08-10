@@ -26,6 +26,8 @@ if RUBY_PLATFORM =~ /mswin|cygwin|mingw/
   end
 end
 
+$CFLAGS = "#{$CFLAGS} -std=c99"
+
 $srcs = Dir.glob("#{$srcdir}/*.c").map { |path| File.basename(path) }
 $srcs << 'pocketfft.c'
 Dir.glob("#{$srcdir}/*/") do |path|
