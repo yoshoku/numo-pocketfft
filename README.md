@@ -4,10 +4,16 @@
 [![Coverage Status](https://coveralls.io/repos/github/yoshoku/numo-pocketfft/badge.svg?branch=master)](https://coveralls.io/github/yoshoku/numo-pocketfft?branch=master)
 [![BSD 3-Clause License](https://img.shields.io/badge/License-BSD%203--Clause-orange.svg)](https://github.com/yoshoku/numo-liblinear/blob/master/LICENSE.txt)
 
-Numo::Pocketfft provides functions for descrete Fourier Transform based on [pocketfft](https://gitlab.mpcdf.mpg.de/mtr/pocketfft).
+Numo::Pocketfft provides functions for performing descrete Fourier Transform with
+[Numo::NArray](https://github.com/ruby-numo/numo-narray) by using
+[pocketfft](https://gitlab.mpcdf.mpg.de/mtr/pocketfft) as backgroud library.
+
+Note: There are other useful Ruby gems perform descrete Fourier Transform with Numo::NArray:
+[Numo::FFTW](https://github.com/ruby-numo/numo-fftw) and [Numo::FFTE](https://github.com/ruby-numo/numo-ffte) by Masahiro Tanaka.
 
 ## Installation
 
+Numo::Pocketfft bundles pocketfft codes, so there is no need to install the library in advance.
 Add this line to your application's Gemfile:
 
 ```ruby
@@ -29,8 +35,26 @@ require 'numo/narray'
 require 'numo/pocketfft'
 
 a = Numo::DFloat[1, 1, 1, 1]
-b = Numo::Pocketfft.irftt(Numo::Pocketfft.rfft(a))
-p (a - b).sum # print 0
+# => Numo::DFloat#shape=[4]
+# [1, 1, 1, 1]
+
+b = Numo::Pocketfft.rfft(a)
+# => Numo::DComplex#shape=[3]
+# [4+0i, 0+0i, 0+0i]
+
+Numo::Pocketfft.irfft(b)
+# => Numo::DFloat#shape=[4]
+# [1, 1, 1, 1]
+
+c = Numo::DFloat.new(2, 2).rand + Complex::I * Numo::DFloat.new(2, 2).rand
+# => Numo::DComplex#shape=[2,2]
+# [[0.0617545+0.116041i, 0.373067+0.344032i],
+#  [0.794815+0.539948i, 0.201042+0.737815i]]
+
+Numo::Pocketfft.ifft2(Numo::Pocketfft.fft2(c))
+#=> Numo::DComplex#shape=[2,2]
+#[[0.0617545+0.116041i, 0.373067+0.344032i],
+# [0.794815+0.539948i, 0.201042+0.737815i]]
 ```
 
 ## Development
