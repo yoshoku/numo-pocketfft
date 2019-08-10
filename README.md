@@ -1,5 +1,9 @@
 # Numo::Pocketfft
 
+[![Build Status](https://travis-ci.org/yoshoku/numo-pocketfft.svg?branch=master)](https://travis-ci.org/yoshoku/numo-pocketfft)
+[![Coverage Status](https://coveralls.io/repos/github/yoshoku/numo-pocketfft/badge.svg?branch=master)](https://coveralls.io/github/yoshoku/numo-pocketfft?branch=master)
+[![BSD 3-Clause License](https://img.shields.io/badge/License-BSD%203--Clause-orange.svg)](https://github.com/yoshoku/numo-liblinear/blob/master/LICENSE.txt)
+
 Numo::Pocketfft provides functions for descrete Fourier Transform based on [pocketfft](https://gitlab.mpcdf.mpg.de/mtr/pocketfft).
 
 ## Installation
