@@ -203,17 +203,10 @@ void Init_pocketfftext()
 {
   rb_require("numo/narray");
 
-  /**
-   * Document-module: Numo
-   * Numo is the top level namespace of NUmerical MOdules for Ruby.
-   */
   mNumo = rb_define_module("Numo");
 
-  /**
-   * Document-module: Numo::Pocketfft
-   * Numo::Pocketfft is the fourier transform library based on Pocketfft.
-   */
   mPocketfft = rb_define_module_under(mNumo, "Pocketfft");
+
   rb_define_module_function(mPocketfft, "ext_rfft", numo_pocketfft_rfft, 1);
   rb_define_module_function(mPocketfft, "ext_irfft", numo_pocketfft_irfft, 1);
   rb_define_module_function(mPocketfft, "ext_cfft", numo_pocketfft_cfft, 1);
