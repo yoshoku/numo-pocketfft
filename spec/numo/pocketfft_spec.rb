@@ -13,119 +13,183 @@ RSpec.describe Numo::Pocketfft do
     expect(Numo::Pocketfft::VERSION).not_to be nil
   end
 
-  it 'computes the 1-d dft' do
-    spect_a = described_class.fft(vec_dcmp)
-    spect_b = fft1d(vec_dcmp)
-    err = (spect_a - spect_b).abs.sum
-    expect(err).to be <= tol
+  describe 'fft' do
+    it 'computes the 1-d dft' do
+      spect_a = described_class.fft(vec_dcmp)
+      spect_b = fft1d(vec_dcmp)
+      err = (spect_a - spect_b).abs.sum
+      expect(err).to be <= tol
+    end
+
+    it 'raises ArgumentError when given non 1-dimensional array' do
+      expect { described_class.fft(mat_dcmp) }.to raise_error(ArgumentError)
+      expect { described_class.fft(tns_dcmp) }.to raise_error(ArgumentError)
+    end
   end
 
-  it 'computes the inverse 1-d dft' do
-    rec_vec_dcmp = described_class.ifft(described_class.fft(vec_dcmp))
-    err = (rec_vec_dcmp - vec_dcmp).abs.sum
-    expect(err).to be <= tol
+  describe 'ifft' do
+    it 'computes the inverse 1-d dft' do
+      rec_vec_dcmp = described_class.ifft(described_class.fft(vec_dcmp))
+      err = (rec_vec_dcmp - vec_dcmp).abs.sum
+      expect(err).to be <= tol
+    end
+
+    it 'raises ArgumentError when given non 1-dimensional array' do
+      expect { described_class.ifft(mat_dcmp) }.to raise_error(ArgumentError)
+      expect { described_class.ifft(tns_dcmp) }.to raise_error(ArgumentError)
+    end
   end
 
-  it 'computes the 2-d dft' do
-    spect_a = described_class.fft2(mat_dcmp)
-    spect_b = described_class.send(
-      :raw_fft,
-      described_class.send(
-        :raw_fft, mat_dcmp,
-        1, inverse: false, real: false
-      ),
-      0, inverse: false, real: false
-    )
-    err = (spect_a - spect_b).abs.sum
-    expect(err).to be <= tol
-  end
-
-  it 'computes the inverse 2-d dft' do
-    inv_spect_a = described_class.ifft2(mat_dcmp)
-    inv_spect_b = described_class.send(
-      :raw_fft,
-      described_class.send(
-        :raw_fft, mat_dcmp,
-        1, inverse: true, real: false
-      ),
-      0, inverse: true, real: false
-    )
-    err = (inv_spect_a - inv_spect_b).abs.sum
-    expect(err).to be <= tol
-  end
-
-  it 'computes the 3-d dft' do
-    spect_a = described_class.fftn(tns_dcmp)
-    spect_b = described_class.send(
-      :raw_fft,
-      described_class.send(
+  describe 'fft2' do
+    it 'computes the 2-d dft' do
+      spect_a = described_class.fft2(mat_dcmp)
+      spect_b = described_class.send(
         :raw_fft,
         described_class.send(
-          :raw_fft, tns_dcmp,
-          2, inverse: false, real: false
+          :raw_fft, mat_dcmp,
+          1, inverse: false, real: false
         ),
-        1, inverse: false, real: false
-      ),
-      0, inverse: false, real: false
-    )
-    err = (spect_a - spect_b).abs.sum
-    expect(err).to be <= tol
+        0, inverse: false, real: false
+      )
+      err = (spect_a - spect_b).abs.sum
+      expect(err).to be <= tol
+    end
+
+    it 'raises ArgumentError when given non 2-dimensional array' do
+      expect { described_class.fft2(vec_dcmp) }.to raise_error(ArgumentError)
+      expect { described_class.fft2(tns_dcmp) }.to raise_error(ArgumentError)
+    end
   end
 
-  it 'computes the inverse 3-d dft' do
-    inv_spect_a = described_class.ifftn(tns_dcmp)
-    inv_spect_b = described_class.send(
-      :raw_fft,
-      described_class.send(
+  describe 'ifft2' do
+    it 'computes the inverse 2-d dft' do
+      inv_spect_a = described_class.ifft2(mat_dcmp)
+      inv_spect_b = described_class.send(
         :raw_fft,
         described_class.send(
-          :raw_fft, tns_dcmp,
-          2, inverse: true, real: false
+          :raw_fft, mat_dcmp,
+          1, inverse: true, real: false
         ),
-        1, inverse: true, real: false
-      ),
-      0, inverse: true, real: false
-    )
-    err = (inv_spect_a - inv_spect_b).abs.sum
-    expect(err).to be <= tol
+        0, inverse: true, real: false
+      )
+      err = (inv_spect_a - inv_spect_b).abs.sum
+      expect(err).to be <= tol
+    end
+
+    it 'raises ArgumentError when given non 2-dimensional array' do
+      expect { described_class.ifft2(vec_dcmp) }.to raise_error(ArgumentError)
+      expect { described_class.ifft2(tns_dcmp) }.to raise_error(ArgumentError)
+    end
   end
 
-  it 'computes the 1-d dft for real data' do
-    spect_a = described_class.rfft(vec_dflt)
-    spect_b = described_class.fft(vec_dflt)[0..15]
-    err = (spect_a - spect_b).abs.sum
-    expect(err).to be <= tol
+  describe 'fftn' do
+    it 'computes the 3-d dft' do
+      spect_a = described_class.fftn(tns_dcmp)
+      spect_b = described_class.send(
+        :raw_fft,
+        described_class.send(
+          :raw_fft,
+          described_class.send(
+            :raw_fft, tns_dcmp,
+            2, inverse: false, real: false
+          ),
+          1, inverse: false, real: false
+        ),
+        0, inverse: false, real: false
+      )
+      err = (spect_a - spect_b).abs.sum
+      expect(err).to be <= tol
+    end
   end
 
-  it 'computes the inverse 1-d dft of real data' do
-    rec_vec_dflt = described_class.irfft(described_class.rfft(vec_dflt))
-    err = (rec_vec_dflt - vec_dflt).abs.sum
-    expect(err).to be <= tol
+  describe 'ifftn' do
+    it 'computes the inverse 3-d dft' do
+      inv_spect_a = described_class.ifftn(tns_dcmp)
+      inv_spect_b = described_class.send(
+        :raw_fft,
+        described_class.send(
+          :raw_fft,
+          described_class.send(
+            :raw_fft, tns_dcmp,
+            2, inverse: true, real: false
+          ),
+          1, inverse: true, real: false
+        ),
+        0, inverse: true, real: false
+      )
+      err = (inv_spect_a - inv_spect_b).abs.sum
+      expect(err).to be <= tol
+    end
   end
 
-  it 'computes the 2-d dft for real data' do
-    spect_a = described_class.rfft2(mat_dflt)
-    spect_b = described_class.fft2(mat_dflt)[true, 0..10]
-    err = (spect_a - spect_b).abs.sum
-    expect(err).to be <= tol
+  describe 'rfft' do
+    it 'computes the 1-d dft for real data' do
+      spect_a = described_class.rfft(vec_dflt)
+      spect_b = described_class.fft(vec_dflt)[0..15]
+      err = (spect_a - spect_b).abs.sum
+      expect(err).to be <= tol
+    end
+
+    it 'raises ArgumentError when given non 1-dimensional array' do
+      expect { described_class.rfft(mat_dflt) }.to raise_error(ArgumentError)
+      expect { described_class.rfft(tns_dflt) }.to raise_error(ArgumentError)
+    end
   end
 
-  it 'computes the inverse 2-d dft of real data' do
-    rec_mat_dflt = described_class.irfft2(described_class.rfft2(mat_dflt))
-    err = (rec_mat_dflt - mat_dflt).abs.sum
-    expect(err).to be <= tol
+  describe 'irfft' do
+    it 'computes the inverse 1-d dft of real data' do
+      rec_vec_dflt = described_class.irfft(described_class.rfft(vec_dflt))
+      err = (rec_vec_dflt - vec_dflt).abs.sum
+      expect(err).to be <= tol
+    end
+
+    it 'raises ArgumentError when given non 1-dimensional array' do
+      expect { described_class.irfft(mat_dflt) }.to raise_error(ArgumentError)
+      expect { described_class.irfft(tns_dflt) }.to raise_error(ArgumentError)
+    end
   end
 
-  it 'computes the 3-d dft for real data' do
-    spect_a = described_class.rfftn(tns_dflt)
-    spect_b = described_class.fftn(tns_dflt)[true, true, 0...6]
-    err = (spect_a - spect_b).abs.sum
-    expect(err).to be <= tol
+  describe 'rfft2' do
+    it 'computes the 2-d dft for real data' do
+      spect_a = described_class.rfft2(mat_dflt)
+      spect_b = described_class.fft2(mat_dflt)[true, 0..10]
+      err = (spect_a - spect_b).abs.sum
+      expect(err).to be <= tol
+    end
+
+    it 'raises ArgumentError when given non 2-dimensional array' do
+      expect { described_class.rfft2(vec_dflt) }.to raise_error(ArgumentError)
+      expect { described_class.rfft2(tns_dflt) }.to raise_error(ArgumentError)
+    end
   end
 
-  it 'computes the inverse 3-d dft of real data' do
-    rec_tns_dflt = described_class.irfftn(described_class.rfftn(tns_dflt))
-    err = (rec_tns_dflt - tns_dflt).abs.sum
-    expect(err).to be <= tol
+  describe 'irfft2' do
+    it 'computes the inverse 2-d dft of real data' do
+      rec_mat_dflt = described_class.irfft2(described_class.rfft2(mat_dflt))
+      err = (rec_mat_dflt - mat_dflt).abs.sum
+      expect(err).to be <= tol
+    end
+
+    it 'raises ArgumentError when given non 2-dimensional array' do
+      expect { described_class.irfft2(vec_dflt) }.to raise_error(ArgumentError)
+      expect { described_class.irfft2(tns_dflt) }.to raise_error(ArgumentError)
+    end
+  end
+
+  describe 'rfftn' do
+    it 'computes the 3-d dft for real data' do
+      spect_a = described_class.rfftn(tns_dflt)
+      spect_b = described_class.fftn(tns_dflt)[true, true, 0...6]
+      err = (spect_a - spect_b).abs.sum
+      expect(err).to be <= tol
+    end
+  end
+
+  describe 'irfftn' do
+    it 'computes the inverse 3-d dft of real data' do
+      rec_tns_dflt = described_class.irfftn(described_class.rfftn(tns_dflt))
+      err = (rec_tns_dflt - tns_dflt).abs.sum
+      expect(err).to be <= tol
+    end
   end
 end

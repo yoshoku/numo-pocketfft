@@ -12,6 +12,7 @@ module Numo
     # @param a [Numo::DComplex] input array
     # @return [Numo::DComplex]
     def fft(a)
+      raise ArgumentError, 'Expect input array to be one-dimensional.' unless a.ndim == 1
       raw_fft(a, 0, inverse: false, real: false)
     end
 
@@ -19,6 +20,7 @@ module Numo
     # @param a [Numo::DComplex] input array
     # @return [Numo::DComplex]
     def ifft(a)
+      raise ArgumentError, 'Expect input array to be one-dimensional.' unless a.ndim == 1
       raw_fft(a, 0, inverse: true, real: false)
     end
 
@@ -26,6 +28,7 @@ module Numo
     # @param a [Numo::DComplex] input array
     # @return [Numo::DComplex]
     def fft2(a)
+      raise ArgumentError, 'Expect input array to be two-dimensional.' unless a.ndim == 2
       fftn(a)
     end
 
@@ -33,6 +36,7 @@ module Numo
     # @param a [Numo::DComplex] input array
     # @return [Numo::DComplex]
     def ifft2(a)
+      raise ArgumentError, 'Expect input array to be two-dimensional.' unless a.ndim == 2
       ifftn(a)
     end
 
@@ -58,6 +62,7 @@ module Numo
     # @param a [Numo::DFloat] input array
     # @return [Numo::DComplex]
     def rfft(a)
+      raise ArgumentError, 'Expect input array to be one-dimensional.' unless a.ndim == 1
       raw_fft(a, 0, inverse: false, real: true)
     end
 
@@ -65,6 +70,7 @@ module Numo
     # @param a [Numo::DComplex] input array
     # @return [Numo::DComplex]
     def irfft(a)
+      raise ArgumentError, 'Expect input array to be one-dimensional.' unless a.ndim == 1
       raw_fft(a, 0, inverse: true, real: true)
     end
 
@@ -72,6 +78,7 @@ module Numo
     # @param a [Numo::DFloat] input array
     # @return [Numo::DComplex]
     def rfft2(a)
+      raise ArgumentError, 'Expect input array to be two-dimensional.' unless a.ndim == 2
       rfftn(a)
     end
 
@@ -79,6 +86,7 @@ module Numo
     # @param a [Numo::DComplex] input array
     # @return [Numo::DComplex]
     def irfft2(a)
+      raise ArgumentError, 'Expect input array to be two-dimensional.' unless a.ndim == 2
       irfftn(a)
     end
 
