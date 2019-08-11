@@ -31,6 +31,10 @@ RSpec.describe Numo::Pocketfft do
       expect { described_class.fft(1) }.to raise_error(ArgumentError)
       expect { described_class.fft([1, 2, 3]) }.to raise_error(ArgumentError)
     end
+
+    it 'raises ArgumentError when given empty array' do
+      expect { described_class.fft(Numo::DFloat[]) }.to raise_error(ArgumentError)
+    end
   end
 
   describe 'ifft' do
@@ -49,6 +53,10 @@ RSpec.describe Numo::Pocketfft do
       expect { described_class.ifft(nil) }.to raise_error(ArgumentError)
       expect { described_class.ifft(1) }.to raise_error(ArgumentError)
       expect { described_class.ifft([1, 2, 3]) }.to raise_error(ArgumentError)
+    end
+
+    it 'raises ArgumentError when given empty array' do
+      expect { described_class.ifft(Numo::DFloat[]) }.to raise_error(ArgumentError)
     end
   end
 
@@ -77,6 +85,10 @@ RSpec.describe Numo::Pocketfft do
       expect { described_class.fft2(1) }.to raise_error(ArgumentError)
       expect { described_class.fft2([[1, 2, 3], [4, 5, 6]]) }.to raise_error(ArgumentError)
     end
+
+    it 'raises ArgumentError when given empty array' do
+      expect { described_class.fft2(Numo::DFloat[[], []]) }.to raise_error(ArgumentError)
+    end
   end
 
   describe 'ifft2' do
@@ -104,6 +116,10 @@ RSpec.describe Numo::Pocketfft do
       expect { described_class.ifft2(1) }.to raise_error(ArgumentError)
       expect { described_class.ifft2([[1, 2, 3], [4, 5, 6]]) }.to raise_error(ArgumentError)
     end
+
+    it 'raises ArgumentError when given empty array' do
+      expect { described_class.ifft2(Numo::DFloat[[], []]) }.to raise_error(ArgumentError)
+    end
   end
 
   describe 'fftn' do
@@ -129,6 +145,10 @@ RSpec.describe Numo::Pocketfft do
       expect { described_class.fftn(nil) }.to raise_error(ArgumentError)
       expect { described_class.fftn(1) }.to raise_error(ArgumentError)
       expect { described_class.fftn([1, 2, 3]) }.to raise_error(ArgumentError)
+    end
+
+    it 'raises ArgumentError when given empty array' do
+      expect { described_class.fftn(Numo::DFloat[]) }.to raise_error(ArgumentError)
     end
   end
 
@@ -156,6 +176,10 @@ RSpec.describe Numo::Pocketfft do
       expect { described_class.ifftn(1) }.to raise_error(ArgumentError)
       expect { described_class.ifftn([1, 2, 3]) }.to raise_error(ArgumentError)
     end
+
+    it 'raises ArgumentError when given empty array' do
+      expect { described_class.ifftn(Numo::DFloat[]) }.to raise_error(ArgumentError)
+    end
   end
 
   describe 'rfft' do
@@ -176,6 +200,10 @@ RSpec.describe Numo::Pocketfft do
       expect { described_class.rfft(1) }.to raise_error(ArgumentError)
       expect { described_class.rfft([1, 2, 3]) }.to raise_error(ArgumentError)
     end
+
+    it 'raises ArgumentError when given empty array' do
+      expect { described_class.rfft(Numo::DFloat[]) }.to raise_error(ArgumentError)
+    end
   end
 
   describe 'irfft' do
@@ -194,6 +222,10 @@ RSpec.describe Numo::Pocketfft do
       expect { described_class.irfft(nil) }.to raise_error(ArgumentError)
       expect { described_class.irfft(1) }.to raise_error(ArgumentError)
       expect { described_class.irfft([1, 2, 3]) }.to raise_error(ArgumentError)
+    end
+
+    it 'raises ArgumentError when given empty array' do
+      expect { described_class.irfft(Numo::DFloat[]) }.to raise_error(ArgumentError)
     end
   end
 
@@ -215,6 +247,10 @@ RSpec.describe Numo::Pocketfft do
       expect { described_class.rfft2(1) }.to raise_error(ArgumentError)
       expect { described_class.rfft2([[1, 2, 3], [4, 5, 6]]) }.to raise_error(ArgumentError)
     end
+
+    it 'raises ArgumentError when given empty array' do
+      expect { described_class.rfft2(Numo::DFloat[[], []]) }.to raise_error(ArgumentError)
+    end
   end
 
   describe 'irfft2' do
@@ -234,6 +270,10 @@ RSpec.describe Numo::Pocketfft do
       expect { described_class.irfft2(1) }.to raise_error(ArgumentError)
       expect { described_class.irfft2([[1, 2, 3], [4, 5, 6]]) }.to raise_error(ArgumentError)
     end
+
+    it 'raises ArgumentError when given empty array' do
+      expect { described_class.irfft2(Numo::DFloat[[], []]) }.to raise_error(ArgumentError)
+    end
   end
 
   describe 'rfftn' do
@@ -249,6 +289,10 @@ RSpec.describe Numo::Pocketfft do
       expect { described_class.rfftn(1) }.to raise_error(ArgumentError)
       expect { described_class.rfftn([1, 2, 3]) }.to raise_error(ArgumentError)
     end
+
+    it 'raises ArgumentError when given empty array' do
+      expect { described_class.rfftn([]) }.to raise_error(ArgumentError)
+    end
   end
 
   describe 'irfftn' do
@@ -262,6 +306,10 @@ RSpec.describe Numo::Pocketfft do
       expect { described_class.irfftn(nil) }.to raise_error(ArgumentError)
       expect { described_class.irfftn(1) }.to raise_error(ArgumentError)
       expect { described_class.irfftn([1, 2, 3]) }.to raise_error(ArgumentError)
+    end
+
+    it 'raises ArgumentError when given empty array' do
+      expect { described_class.irfftn([]) }.to raise_error(ArgumentError)
     end
   end
 end
