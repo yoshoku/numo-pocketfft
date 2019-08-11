@@ -12,7 +12,10 @@ module Numo
     # @param a [Numo::DFloat/Numo::DComplex] Real or complex 1-dimensional input array.
     # @return [Numo::DComplex] Transformed data.
     def fft(a)
+      raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray)
+      raise ArgumentError, 'Expect input array to be non-empty.' if a.empty?
       raise ArgumentError, 'Expect input array to be one-dimensional.' unless a.ndim == 1
+
       raw_fft(a, 0, inverse: false, real: false)
     end
 
@@ -20,7 +23,10 @@ module Numo
     # @param a [Numo::DComplex] Complex 1-dimensional input array.
     # @return [Numo::DComplex] Inversed transformed data.
     def ifft(a)
+      raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray)
+      raise ArgumentError, 'Expect input array to be non-empty.' if a.empty?
       raise ArgumentError, 'Expect input array to be one-dimensional.' unless a.ndim == 1
+
       raw_fft(a, 0, inverse: true, real: false)
     end
 
@@ -28,7 +34,10 @@ module Numo
     # @param a [Numo::DFloat/Numo::DComplex] Real or complex 2-dimensional input array.
     # @return [Numo::DComplex] Transformed data.
     def fft2(a)
+      raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray)
+      raise ArgumentError, 'Expect input array to be non-empty.' if a.empty?
       raise ArgumentError, 'Expect input array to be two-dimensional.' unless a.ndim == 2
+
       fftn(a)
     end
 
@@ -36,7 +45,10 @@ module Numo
     # @param a [Numo::DComplex] Complex 2-dimensional input array.
     # @return [Numo::DComplex] Inversed transformed data.
     def ifft2(a)
+      raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray)
+      raise ArgumentError, 'Expect input array to be non-empty.' if a.empty?
       raise ArgumentError, 'Expect input array to be two-dimensional.' unless a.ndim == 2
+
       ifftn(a)
     end
 
@@ -44,6 +56,9 @@ module Numo
     # @param a [Numo::DFloat/Numo::DComplex] Real or complex input array with any-dimension.
     # @return [Numo::DComplex] Transformed data.
     def fftn(a)
+      raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray)
+      raise ArgumentError, 'Expect input array to be non-empty.' if a.empty?
+
       b = a.dup
       (0...b.ndim).to_a.reverse.each { |ax_id| b = raw_fft(b, ax_id, inverse: false, real: false) }
       b
@@ -53,6 +68,9 @@ module Numo
     # @param a [Numo::DComplex] Complex input array with any-dimension.
     # @return [Numo::DComplex] Inversed transformed data.
     def ifftn(a)
+      raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray)
+      raise ArgumentError, 'Expect input array to be non-empty.' if a.empty?
+
       b = a.dup
       (0...b.ndim).to_a.each { |ax_id| b = raw_fft(b, ax_id, inverse: true, real: false) }
       b
@@ -62,7 +80,10 @@ module Numo
     # @param a [Numo::DFloat] Real 1-dimensional input array.
     # @return [Numo::DComplex] Transformed data.
     def rfft(a)
+      raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray)
+      raise ArgumentError, 'Expect input array to be non-empty.' if a.empty?
       raise ArgumentError, 'Expect input array to be one-dimensional.' unless a.ndim == 1
+
       raw_fft(a, 0, inverse: false, real: true)
     end
 
@@ -70,7 +91,10 @@ module Numo
     # @param a [Numo::DComplex] Complex 1-dimensional input array.
     # @return [Numo::DFloat] Inverse transformed data.
     def irfft(a)
+      raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray)
+      raise ArgumentError, 'Expect input array to be non-empty.' if a.empty?
       raise ArgumentError, 'Expect input array to be one-dimensional.' unless a.ndim == 1
+
       raw_fft(a, 0, inverse: true, real: true)
     end
 
@@ -78,7 +102,10 @@ module Numo
     # @param a [Numo::DFloat] Real 2-dimensional input array.
     # @return [Numo::DComplex] Transformed data.
     def rfft2(a)
+      raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray)
+      raise ArgumentError, 'Expect input array to be non-empty.' if a.empty?
       raise ArgumentError, 'Expect input array to be two-dimensional.' unless a.ndim == 2
+
       rfftn(a)
     end
 
@@ -86,7 +113,10 @@ module Numo
     # @param a [Numo::DComplex] Complex 2-dimensional input array.
     # @return [Numo::DFloat] Inverse transformed data.
     def irfft2(a)
+      raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray)
+      raise ArgumentError, 'Expect input array to be non-empty.' if a.empty?
       raise ArgumentError, 'Expect input array to be two-dimensional.' unless a.ndim == 2
+
       irfftn(a)
     end
 
@@ -94,6 +124,9 @@ module Numo
     # @param a [Numo::DFloat] Real input array with any-dimension.
     # @return [Numo::DComplex] Transformed data.
     def rfftn(a)
+      raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray)
+      raise ArgumentError, 'Expect input array to be non-empty.' if a.empty?
+
       last_axis_id = a.ndim - 1
       b = raw_fft(a, last_axis_id, inverse: false, real: true)
       (0...last_axis_id).to_a.reverse.each { |ax_id| b = raw_fft(b, ax_id, inverse: false, real: false) }
@@ -104,6 +137,9 @@ module Numo
     # @param a [Numo::DComplex] Complex input array with any-dimension.
     # @return [Numo::DFloat] Inverse transformed data.
     def irfftn(a)
+      raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray)
+      raise ArgumentError, 'Expect input array to be non-empty.' if a.empty?
+
       last_axis_id = a.ndim - 1
       b = a.dup
       (0...last_axis_id).to_a.each { |ax_id| b = raw_fft(b, ax_id, inverse: true, real: false) }

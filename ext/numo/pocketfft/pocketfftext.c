@@ -12,6 +12,7 @@ VALUE numo_pocketfft_fft(VALUE x_val, int is_forward)
   int n_repeats;
   int i;
   int res;
+  int fail;
   double fct;
   VALUE z_val;
   double* z_pt;
@@ -30,28 +31,39 @@ VALUE numo_pocketfft_fft(VALUE x_val, int is_forward)
   length = NA_SHAPE(x_nary)[n_dims - 1];
   x_pt = (double*)na_get_pointer_for_read(x_val);
 
+  plan = make_cfft_plan(length);
+  if (!plan) {
+    rb_raise(rb_eNoMemError, "Failed to allocate memory for plan of pocketfft.");
+    return Qnil;
+  }
+
   z_val = nary_s_new_like(numo_cDComplex, x_val);
   z_pt = (double*)na_get_pointer_for_write(z_val);
   GetNArray(z_val, z_nary);
   for (i = 0; i < (int)(NA_SIZE(z_nary) * 2); z_pt[i++] = 0.0);
 
+  fail = 0;
   fct = is_forward == 1 ? 1.0 : 1.0 / length;
-  plan = make_cfft_plan(length);
-  if (!plan) {
-    return Qnil;
-  }
-
   n_repeats = (int)(NA_SIZE(x_nary)) / length;
   for (i = 0; i < n_repeats; i++) {
     memcpy(z_pt, x_pt, 2 * length * sizeof(double));
     res = is_forward == 1 ? cfft_forward(plan, z_pt, fct) : cfft_backward(plan, z_pt, fct);
-    if (res != 0) { break; }
+    if (res != 0) {
+      fail = 1;
+      break;
+    }
     z_pt += length * 2;
     x_pt += length * 2;
   }
 
   if (plan) {
     destroy_cfft_plan(plan);
+  }
+
+  if (fail) {
+    rb_raise(rb_eNoMemError, "Failed to allocate memory in function of pocketfft.");
+    rb_funcall(z_val, rb_intern("free"), 0);
+    return Qnil;
   }
 
   return z_val;
@@ -84,6 +96,7 @@ static VALUE numo_pocketfft_rfft(VALUE self, VALUE x_val)
   size_t length;
   int n_repeats;
   int i;
+  int fail;
   size_t* z_shape;
   VALUE z_val;
   narray_t* z_nary;
@@ -105,6 +118,7 @@ static VALUE numo_pocketfft_rfft(VALUE self, VALUE x_val)
 
   plan = make_rfft_plan(length);
   if (!plan) {
+    rb_raise(rb_eNoMemError, "Failed to allocate memory for plan of pocketfft.");
     return Qnil;
   }
 
@@ -118,12 +132,16 @@ static VALUE numo_pocketfft_rfft(VALUE self, VALUE x_val)
   GetNArray(z_val, z_nary);
   for (i = 0; i < (int)(NA_SIZE(z_nary) * 2); z_pt[i++] = 0.0);
 
+  fail = 0;
   z_step = (int)(NA_SHAPE(z_nary)[n_dims - 1]) * 2;
   n_repeats = (int)(NA_SIZE(x_nary)) / length;
   for (i = 0; i < n_repeats; i++) {
     z_pt[z_step - 1] = 0.0;
     memcpy(z_pt + 1, x_pt, length * sizeof(double));
-    if (rfft_forward(plan, z_pt + 1, 1.0) != 0) { break; }
+    if (rfft_forward(plan, z_pt + 1, 1.0) != 0) {
+      fail = 1;
+      break;
+    }
     z_pt[0] = z_pt[1];
     z_pt[1] = 0.0;
     z_pt += z_step;
@@ -132,6 +150,12 @@ static VALUE numo_pocketfft_rfft(VALUE self, VALUE x_val)
 
   if (plan) {
     destroy_rfft_plan(plan);
+  }
+
+  if (fail) {
+    rb_raise(rb_eNoMemError, "Failed to allocate memory in function of pocketfft.");
+    rb_funcall(z_val, rb_intern("free"), 0);
+    return Qnil;
   }
 
   return z_val;
@@ -148,6 +172,7 @@ static VALUE numo_pocketfft_irfft(VALUE self, VALUE x_val)
   int n_dims;
   int n_repeats;
   int i;
+  int fail;
   double fct;
   size_t* z_shape;
   VALUE z_val;
@@ -166,10 +191,10 @@ static VALUE numo_pocketfft_irfft(VALUE self, VALUE x_val)
   n_dims = NA_NDIM(x_nary);
   length = NA_SHAPE(x_nary)[n_dims - 1];
   x_pt = (double*)na_get_pointer_for_read(x_val);
-  fct = 1.0 / length;
 
   plan = make_rfft_plan(length);
   if (!plan) {
+    rb_raise(rb_eNoMemError, "Failed to allocate memory for plan of pocketfft.");
     return Qnil;
   }
 
@@ -183,17 +208,28 @@ static VALUE numo_pocketfft_irfft(VALUE self, VALUE x_val)
   GetNArray(z_val, z_nary);
   for (i = 0; i < (int)NA_SIZE(z_nary); z_pt[i++] = 0.0);
 
+  fail = 0;
+  fct = 1.0 / length;
   n_repeats = (int)(NA_SIZE(z_nary)) / length;
   for (i = 0; i < n_repeats; i++) {
     memcpy(z_pt + 1, x_pt + 2, (length - 1) * sizeof(double));
     z_pt[0] = x_pt[0];
-    if (rfft_backward(plan, z_pt, fct) != 0) { break; }
+    if (rfft_backward(plan, z_pt, fct) != 0) {
+      fail = 1;
+      break;
+    }
     z_pt += length;
     x_pt += length * 2;
   }
 
   if (plan) {
     destroy_rfft_plan(plan);
+  }
+
+  if (fail) {
+    rb_raise(rb_eNoMemError, "Failed to allocate memory in function of pocketfft.");
+    rb_funcall(z_val, rb_intern("free"), 0);
+    return Qnil;
   }
 
   return z_val;
