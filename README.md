@@ -15,7 +15,7 @@ Note: There are other useful Ruby gems perform descrete Fourier Transform with N
 
 ## Installation
 
-Numo::Pocketfft bundles pocketfft codes, so there is no need to install the library in advance.
+Numo::Pocketfft bundles pocketfft codes, so there is no need to install another external library in advance.
 Add this line to your application's Gemfile:
 
 ```ruby
