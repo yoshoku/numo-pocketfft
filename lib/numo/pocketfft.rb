@@ -146,6 +146,46 @@ module Numo
       raw_fft(b, last_axis_id, inverse: true, real: true)
     end
 
+    # Convolve two N-dimensinal arrays using dscrete Fourier Transform.
+    # @example
+    #   require 'numo/pocketfftw'
+    #
+    #   a = Numo::DFloat[1, 2, 3]
+    #   b = Numo::DFloat[4, 5]
+    #   p Numo::Pocketfft.fftconvolve(a, b)
+    #   # Numo::DFloat#shape=[4]
+    #   # [4, 13, 22, 15]
+    #
+    #   a = Numo::DFloat[[1, 2], [3, 4]]
+    #   b = Numo::DFloat[[5, 6], [7, 8]]
+    #   p Numo::Pocketfft.fftconvolve(a, b)
+    #   # Numo::DFloat#shape=[3,3]
+    #   # [[5, 16, 12],
+    #   #  [22, 60, 40],
+    #   #  [21, 52, 32]]
+    # @param a [Numo::DFloat/Numo::DComplex] Fisrt input array with any-dimension.
+    # @param b [Numo::DFloat/Numo::DComplex] Second input array with the same number of dimensions as first input array.
+    # @return [Numo::DFloat/Numo::DComplex] The discrete linear convolution of 'a' with 'b'.
+    def fftconvolve(a, b)
+      raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray) && b.is_a?(Numo::NArray)
+      raise ArgumentError, 'Expect input array to be non-empty.' if a.empty? || b.empty?
+      raise ArgumentError, 'Input arrays should have the same dimensionarity' if a.ndim != b.ndim
+
+      ashp = a.shape
+      bshp = b.shape
+
+      return a * b if (ashp + bshp).all? { |el| el == 1 }
+
+      retshp = Array.new(a.ndim) { |n| ashp[n] + bshp[n] - 1 }
+      a_zp = Numo::DComplex.zeros(*retshp).tap { |arr| arr[*ashp.map { |n| 0...n }] = a }
+      b_zp = Numo::DComplex.zeros(*retshp).tap { |arr| arr[*bshp.map { |n| 0...n }] = b }
+      ret = ifftn(fftn(a_zp) * fftn(b_zp))
+
+      return ret if a.is_a?(Numo::DComplex) || a.is_a?(Numo::SComplex) || b.is_a?(Numo::DComplex) || b.is_a?(Numo::SComplex)
+
+      ret.real
+    end
+
     # @!visibility private
     def raw_fft(a, axis_id, inverse:, real:)
       if axis_id == a.ndim - 1

@@ -312,4 +312,74 @@ RSpec.describe Numo::Pocketfft do
       expect { described_class.irfftn([]) }.to raise_error(ArgumentError)
     end
   end
+
+  describe 'fftconvolve' do
+    it 'computes convolution of 1-d real array' do
+      arr = Numo::DFloat[1, 2, 3]
+      cnv = described_class.fftconvolve(arr, arr)
+      exp = Numo::DFloat[1, 4, 10, 12, 9]
+      err = (exp - cnv).abs.sum
+      expect(err).to be <= tol
+    end
+
+    it 'computes convolution of 1-d complex array' do
+      arr = Numo::DFloat[1, 2, 3] + Complex::I * Numo::DFloat[1, 2, 3]
+      cnv = described_class.fftconvolve(arr, arr)
+      exp = Complex::I * Numo::DFloat[2, 8, 20, 24, 18]
+      err = (exp - cnv).abs.sum
+      expect(err).to be <= tol
+    end
+
+    it 'computes convolution of 1-d arrays of different sizes' do
+      arr_a = Numo::DFloat[1, 2, 3]
+      arr_b = Numo::DFloat[4, 5]
+      cnv = described_class.fftconvolve(arr_a, arr_b)
+      exp = Numo::DFloat[4, 13, 22, 15]
+      err = (exp - cnv).abs.sum
+      expect(err).to be <= tol
+    end
+
+    it 'computes convolution of 2-d real array' do
+      arr = Numo::DFloat[[1, 2, 3], [4, 5, 6]]
+      cnv = described_class.fftconvolve(arr, arr)
+      exp = Numo::DFloat[[1, 4, 10, 12, 9], [8, 26, 56, 54, 36], [16, 40, 73, 60, 36]]
+      err = (exp - cnv).abs.sum
+      expect(err).to be <= tol
+    end
+
+    it 'computes convolution of 2-d complex array' do
+      arr = Numo::DFloat[[1, 3, 5], [2, 4, 6]] + Complex::I * Numo::DFloat[[2, 4, 6], [1, 3, 5]]
+      cnv = described_class.fftconvolve(arr, arr)
+      exp = Numo::DFloat[[-3, -10, -21, -18, -11], [0, 0, 0, 0, 0], [3, 10, 21, 18, 11]] +
+            Complex::I * Numo::DFloat[[4, 20, 56, 76, 60], [10, 44, 118, 156, 122], [4, 20, 56, 76, 60]]
+      err = (exp - cnv).abs.sum
+      expect(err).to be <= tol
+    end
+
+    it 'computes convolution of 2-d real arrays of different sizes' do
+      arr_a = Numo::DFloat[[1, 2, 3], [4, 5, 6]]
+      arr_b = Numo::DFloat[[7, 8], [9, 1]]
+      cnv = described_class.fftconvolve(arr_a, arr_b)
+      exp = Numo::DFloat[[7, 22, 37, 24], [37, 86, 111, 51], [36, 49, 59, 6]]
+      err = (exp - cnv).abs.sum
+      expect(err).to be <= tol
+    end
+
+    it 'raises ArgumentError when given a non-Numo::NArray object' do
+      expect { described_class.fftconvolve(nil, Numo::DFloat[1, 2]) }.to raise_error(ArgumentError)
+      expect { described_class.fftconvolve(Numo::DFloat[1, 2], 1) }.to raise_error(ArgumentError)
+      expect { described_class.fftconvolve([1, 2, 3], Numo::DFloat[1, 2]) }.to raise_error(ArgumentError)
+    end
+
+    it 'raises ArgumentError when given empty array' do
+      expect { described_class.fftconvolve(Numo::DFloat[], Numo::DFloat[]) }.to raise_error(ArgumentError)
+      expect { described_class.fftconvolve(Numo::DFloat[1, 2], Numo::DFloat[]) }.to raise_error(ArgumentError)
+      expect { described_class.fftconvolve(Numo::DFloat[], Numo::DFloat[1, 2]) }.to raise_error(ArgumentError)
+    end
+
+    it 'raises ArgumentError when given arrays of different dimensions' do
+      expect { described_class.fftconvolve(Numo::DFloat[1, 2], Numo::DFloat[[1, 2], [3, 4]]) }.to raise_error(ArgumentError)
+      expect { described_class.fftconvolve(Numo::DFloat[[1, 2], [3, 4]], Numo::DFloat[1, 2]) }.to raise_error(ArgumentError)
+    end
+  end
 end
