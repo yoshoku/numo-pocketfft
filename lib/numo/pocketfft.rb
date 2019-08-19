@@ -10,6 +10,7 @@ module Numo
 
     # Compute the 1-dimensional discrete Fourier Transform.
     # @param a [Numo::DFloat/Numo::DComplex] Real or complex 1-dimensional input array.
+    # @raise [ArgumentError] This error is raised if input array is not Numo::NArray, is not one-dimensional array, or is empty.
     # @return [Numo::DComplex] Transformed data.
     def fft(a)
       raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray)
@@ -21,6 +22,7 @@ module Numo
 
     # Compute the 1-dimensional inverse discrete Fourier Transform.
     # @param a [Numo::DComplex] Complex 1-dimensional input array.
+    # @raise [ArgumentError] This error is raised if input array is not Numo::NArray, is not one-dimensional array, or is empty.
     # @return [Numo::DComplex] Inversed transformed data.
     def ifft(a)
       raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray)
@@ -32,6 +34,7 @@ module Numo
 
     # Compute the 2-dimensional discrete Fourier Transform.
     # @param a [Numo::DFloat/Numo::DComplex] Real or complex 2-dimensional input array.
+    # @raise [ArgumentError] This error is raised if input array is not Numo::NArray, is not two-dimensional array, or is empty.
     # @return [Numo::DComplex] Transformed data.
     def fft2(a)
       raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray)
@@ -43,6 +46,7 @@ module Numo
 
     # Compute the 2-dimensional inverse discrete Fourier Transform.
     # @param a [Numo::DComplex] Complex 2-dimensional input array.
+    # @raise [ArgumentError] This error is raised if input array is not Numo::NArray, is not two-dimensional array, or is empty.
     # @return [Numo::DComplex] Inversed transformed data.
     def ifft2(a)
       raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray)
@@ -54,6 +58,7 @@ module Numo
 
     # Compute the N-dimensional discrete Fourier Transform.
     # @param a [Numo::DFloat/Numo::DComplex] Real or complex input array with any-dimension.
+    # @raise [ArgumentError] This error is raised if input array is not Numo::NArray or is empty.
     # @return [Numo::DComplex] Transformed data.
     def fftn(a)
       raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray)
@@ -66,6 +71,7 @@ module Numo
 
     # Compute the N-dimensional inverse discrete Fourier Transform.
     # @param a [Numo::DComplex] Complex input array with any-dimension.
+    # @raise [ArgumentError] This error is raised if input array is not Numo::NArray or is empty.
     # @return [Numo::DComplex] Inversed transformed data.
     def ifftn(a)
       raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray)
@@ -78,6 +84,7 @@ module Numo
 
     # Compute the 1-dimensional discrete Fourier Transform for real input.
     # @param a [Numo::DFloat] Real 1-dimensional input array.
+    # @raise [ArgumentError] This error is raised if input array is not Numo::NArray, is not one-dimensional array, or is empty.
     # @return [Numo::DComplex] Transformed data.
     def rfft(a)
       raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray)
@@ -89,6 +96,7 @@ module Numo
 
     # Compute the inverse of the 1-dimensional discrete Fourier Transform of real input.
     # @param a [Numo::DComplex] Complex 1-dimensional input array.
+    # @raise [ArgumentError] This error is raised if input array is not Numo::NArray, is not one-dimensional array, or is empty.
     # @return [Numo::DFloat] Inverse transformed data.
     def irfft(a)
       raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray)
@@ -100,6 +108,7 @@ module Numo
 
     # Compute the 2-dimensional discrete Fourier Transform for real input.
     # @param a [Numo::DFloat] Real 2-dimensional input array.
+    # @raise [ArgumentError] This error is raised if input array is not Numo::NArray, is not two-dimensional array, or is empty.
     # @return [Numo::DComplex] Transformed data.
     def rfft2(a)
       raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray)
@@ -111,6 +120,7 @@ module Numo
 
     # Compute the inverse of the 2-dimensional discrete Fourier Transform of real input.
     # @param a [Numo::DComplex] Complex 2-dimensional input array.
+    # @raise [ArgumentError] This error is raised if input array is not Numo::NArray, is not two-dimensional array, or is empty.
     # @return [Numo::DFloat] Inverse transformed data.
     def irfft2(a)
       raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray)
@@ -122,6 +132,7 @@ module Numo
 
     # Compute the N-dimensional discrete Fourier Transform for real input.
     # @param a [Numo::DFloat] Real input array with any-dimension.
+    # @raise [ArgumentError] This error is raised if input array is not Numo::NArray or is empty.
     # @return [Numo::DComplex] Transformed data.
     def rfftn(a)
       raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray)
@@ -135,6 +146,7 @@ module Numo
 
     # Compute the inverse of the N-dimensional discrete Fourier Transform of real input.
     # @param a [Numo::DComplex] Complex input array with any-dimension.
+    # @raise [ArgumentError] This error is raised if input array is not Numo::NArray or is empty.
     # @return [Numo::DFloat] Inverse transformed data.
     def irfftn(a)
       raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray)
@@ -165,6 +177,7 @@ module Numo
     #   #  [21, 52, 32]]
     # @param a [Numo::DFloat/Numo::DComplex] Fisrt input array with any-dimension.
     # @param b [Numo::DFloat/Numo::DComplex] Second input array with the same number of dimensions as first input array.
+    # @raise [ArgumentError] This error is raised if input arrays are not Numo::NArray, are not the same dimensionality, or are empty.
     # @return [Numo::DFloat/Numo::DComplex] The discrete linear convolution of 'a' with 'b'.
     def fftconvolve(a, b)
       raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray) && b.is_a?(Numo::NArray)
