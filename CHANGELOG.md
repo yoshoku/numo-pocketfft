@@ -1,3 +1,7 @@
+# 0.2.1
+- Fix the link to the document.
+- Several documentation improvements.
+
 # 0.2.0
 - Add fftconvolve method that convolves two arrays with FFT.
 
