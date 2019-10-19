@@ -3,7 +3,7 @@
 [![Gem Version](https://badge.fury.io/rb/numo-pocketfft.svg)](https://badge.fury.io/rb/numo-pocketfft)
 [![Build Status](https://travis-ci.org/yoshoku/numo-pocketfft.svg?branch=master)](https://travis-ci.org/yoshoku/numo-pocketfft)
 [![Coverage Status](https://coveralls.io/repos/github/yoshoku/numo-pocketfft/badge.svg?branch=master)](https://coveralls.io/github/yoshoku/numo-pocketfft?branch=master)
-[![BSD 3-Clause License](https://img.shields.io/badge/License-BSD%203--Clause-orange.svg)](https://github.com/yoshoku/numo-liblinear/blob/master/LICENSE.txt)
+[![BSD 3-Clause License](https://img.shields.io/badge/License-BSD%203--Clause-orange.svg)](https://github.com/yoshoku/numo-pocketfft/blob/master/LICENSE.txt)
 [![Documentation](http://img.shields.io/badge/docs-rdoc.info-blue.svg)](https://yoshoku.github.io/numo-pocketfft/doc/)
 
 Numo::Pocketfft provides functions for performing descrete Fourier Transform with
