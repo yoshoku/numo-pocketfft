@@ -1,7 +1,7 @@
 # Numo::Pocketfft
 
+[![Build Status](https://github.com/yoshoku/numo-pocketfft/workflows/build/badge.svg)](https://github.com/yoshoku/numo-pocketfft/actions?query=workflow%3Abuild)
 [![Gem Version](https://badge.fury.io/rb/numo-pocketfft.svg)](https://badge.fury.io/rb/numo-pocketfft)
-[![Build Status](https://travis-ci.org/yoshoku/numo-pocketfft.svg?branch=master)](https://travis-ci.org/yoshoku/numo-pocketfft)
 [![BSD 3-Clause License](https://img.shields.io/badge/License-BSD%203--Clause-orange.svg)](https://github.com/yoshoku/numo-pocketfft/blob/master/LICENSE.txt)
 [![Documentation](http://img.shields.io/badge/docs-rdoc.info-blue.svg)](https://yoshoku.github.io/numo-pocketfft/doc/)
 
