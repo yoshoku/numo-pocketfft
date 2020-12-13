@@ -2,7 +2,7 @@
 
 [![Build Status](https://github.com/yoshoku/numo-pocketfft/workflows/build/badge.svg)](https://github.com/yoshoku/numo-pocketfft/actions?query=workflow%3Abuild)
 [![Gem Version](https://badge.fury.io/rb/numo-pocketfft.svg)](https://badge.fury.io/rb/numo-pocketfft)
-[![BSD 3-Clause License](https://img.shields.io/badge/License-BSD%203--Clause-orange.svg)](https://github.com/yoshoku/numo-pocketfft/blob/master/LICENSE.txt)
+[![BSD 3-Clause License](https://img.shields.io/badge/License-BSD%203--Clause-orange.svg)](https://github.com/yoshoku/numo-pocketfft/blob/main/LICENSE.txt)
 [![Documentation](http://img.shields.io/badge/docs-rdoc.info-blue.svg)](https://yoshoku.github.io/numo-pocketfft/doc/)
 
 Numo::Pocketfft provides functions for performing descrete Fourier Transform with
@@ -74,4 +74,4 @@ The gem is available as open source under the terms of the [BSD-3-Clause License
 
 ## Code of Conduct
 
-Everyone interacting in the Numo::Pocketfft project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/yoshoku/numo-pocketfft/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Numo::Pocketfft project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/yoshoku/numo-pocketfft/blob/main/CODE_OF_CONDUCT.md).

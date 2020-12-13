@@ -39,7 +39,7 @@ Gem::Specification.new do |spec|
 
   spec.metadata      = {
     'homepage_uri' => 'https://github.com/yoshoku/numo-pocketfft',
-    'changelog_uri' => 'https://github.com/yoshoku/numo-pocketfft/blob/master/CHANGELOG.md',
+    'changelog_uri' => 'https://github.com/yoshoku/numo-pocketfft/blob/main/CHANGELOG.md',
     'source_code_uri' => 'https://github.com/yoshoku/numo-pocketfft',
     'documentation_uri' => 'https://yoshoku.github.io/numo-pocketfft/doc/',
     'bug_tracker_uri' => 'https://github.com/yoshoku/numo-pocketfft/issues'
