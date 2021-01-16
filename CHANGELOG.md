@@ -1,3 +1,7 @@
+# 0.2.2
+- Fix bug that caused segmentation fault due to garbage collection ([#4](https://github.com/yoshoku/numo-pocketfft/pull/4)).
+- Fix some configuration files.
+
 # 0.2.1
 - Fix the link to the document.
 - Several documentation improvements.
