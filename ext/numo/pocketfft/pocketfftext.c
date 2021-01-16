@@ -60,13 +60,13 @@ VALUE numo_pocketfft_fft(VALUE x_val, int is_forward)
     destroy_cfft_plan(plan);
   }
 
+  RB_GC_GUARD(x_val);
+
   if (fail) {
     rb_raise(rb_eNoMemError, "Failed to allocate memory in function of pocketfft.");
     rb_funcall(z_val, rb_intern("free"), 0);
     return Qnil;
   }
-  
-  RB_GC_GUARD(x_val);
 
   return z_val;
 }
@@ -154,6 +154,8 @@ static VALUE numo_pocketfft_rfft(VALUE self, VALUE x_val)
     destroy_rfft_plan(plan);
   }
 
+  RB_GC_GUARD(x_val);
+
   if (fail) {
     rb_raise(rb_eNoMemError, "Failed to allocate memory in function of pocketfft.");
     rb_funcall(z_val, rb_intern("free"), 0);
@@ -227,6 +229,8 @@ static VALUE numo_pocketfft_irfft(VALUE self, VALUE x_val)
   if (plan) {
     destroy_rfft_plan(plan);
   }
+
+  RB_GC_GUARD(x_val);
 
   if (fail) {
     rb_raise(rb_eNoMemError, "Failed to allocate memory in function of pocketfft.");
