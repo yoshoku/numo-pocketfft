@@ -65,6 +65,8 @@ VALUE numo_pocketfft_fft(VALUE x_val, int is_forward)
     rb_funcall(z_val, rb_intern("free"), 0);
     return Qnil;
   }
+  
+  RB_GC_GUARD(x_val);
 
   return z_val;
 }
