@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include <ruby.h>
+
 #include <numo/narray.h>
 #include <numo/template.h>
 

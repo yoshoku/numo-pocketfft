@@ -3,8 +3,7 @@
 VALUE mNumo;
 VALUE mPocketfft;
 
-VALUE numo_pocketfft_fft(VALUE x_val, int is_forward)
-{
+VALUE numo_pocketfft_fft(VALUE x_val, int is_forward) {
   narray_t* x_nary;
   double* x_pt;
   size_t length;
@@ -40,7 +39,7 @@ VALUE numo_pocketfft_fft(VALUE x_val, int is_forward)
   z_val = nary_s_new_like(numo_cDComplex, x_val);
   z_pt = (double*)na_get_pointer_for_write(z_val);
   GetNArray(z_val, z_nary);
-  for (i = 0; i < (int)(NA_SIZE(z_nary) * 2); z_pt[i++] = 0.0);
+  memset(z_pt, 0, (NA_SIZE(z_nary) * 2) * sizeof(double));
 
   fail = 0;
   fct = is_forward == 1 ? 1.0 : 1.0 / length;
@@ -74,24 +73,17 @@ VALUE numo_pocketfft_fft(VALUE x_val, int is_forward)
 /**
  * @!visibility private
  */
-static VALUE numo_pocketfft_cfft(VALUE self, VALUE x_val)
-{
-  return numo_pocketfft_fft(x_val, 1);
-}
+static VALUE numo_pocketfft_cfft(VALUE self, VALUE x_val) { return numo_pocketfft_fft(x_val, 1); }
 
 /**
  * @!visibility private
  */
-static VALUE numo_pocketfft_icfft(VALUE self, VALUE x_val)
-{
-  return numo_pocketfft_fft(x_val, 0);
-}
+static VALUE numo_pocketfft_icfft(VALUE self, VALUE x_val) { return numo_pocketfft_fft(x_val, 0); }
 
 /**
  * @!visibility private
  */
-static VALUE numo_pocketfft_rfft(VALUE self, VALUE x_val)
-{
+static VALUE numo_pocketfft_rfft(VALUE self, VALUE x_val) {
   narray_t* x_nary;
   double* x_pt;
   int n_dims;
@@ -132,7 +124,7 @@ static VALUE numo_pocketfft_rfft(VALUE self, VALUE x_val)
   z_val = rb_narray_new(numo_cDComplex, n_dims, z_shape);
   z_pt = (double*)na_get_pointer_for_write(z_val);
   GetNArray(z_val, z_nary);
-  for (i = 0; i < (int)(NA_SIZE(z_nary) * 2); z_pt[i++] = 0.0);
+  memset(z_pt, 0, (NA_SIZE(z_nary) * 2) * sizeof(double));
 
   fail = 0;
   z_step = (int)(NA_SHAPE(z_nary)[n_dims - 1]) * 2;
@@ -168,8 +160,7 @@ static VALUE numo_pocketfft_rfft(VALUE self, VALUE x_val)
 /**
  * @!visibility private
  */
-static VALUE numo_pocketfft_irfft(VALUE self, VALUE x_val)
-{
+static VALUE numo_pocketfft_irfft(VALUE self, VALUE x_val) {
   narray_t* x_nary;
   double* x_pt;
   size_t length;
@@ -210,7 +201,7 @@ static VALUE numo_pocketfft_irfft(VALUE self, VALUE x_val)
   z_val = rb_narray_new(numo_cDFloat, n_dims, z_shape);
   z_pt = (double*)na_get_pointer_for_write(z_val);
   GetNArray(z_val, z_nary);
-  for (i = 0; i < (int)NA_SIZE(z_nary); z_pt[i++] = 0.0);
+  memset(z_pt, 0, NA_SIZE(z_nary) * sizeof(double));
 
   fail = 0;
   fct = 1.0 / length;
@@ -241,8 +232,7 @@ static VALUE numo_pocketfft_irfft(VALUE self, VALUE x_val)
   return z_val;
 }
 
-void Init_pocketfftext()
-{
+void Init_pocketfftext() {
   rb_require("numo/narray");
 
   mNumo = rb_define_module("Numo");
