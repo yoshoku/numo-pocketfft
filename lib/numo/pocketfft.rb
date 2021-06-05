@@ -64,8 +64,11 @@ module Numo
       raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray)
       raise ArgumentError, 'Expect input array to be non-empty.' if a.empty?
 
-      b = a.dup
-      (0...b.ndim).to_a.reverse.each { |ax_id| b = raw_fft(b, ax_id, inverse: false, real: false) }
+      return raw_fft(a, 0, inverse: false, real: false) if a.ndim == 1
+
+      last_axis_id = a.ndim - 1
+      b = raw_fft(a, last_axis_id, inverse: false, real: false)
+      (last_axis_id - 1).downto(0) { |ax_id| b = raw_fft(b, ax_id, inverse: false, real: false) }
       b
     end
 
@@ -77,8 +80,11 @@ module Numo
       raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray)
       raise ArgumentError, 'Expect input array to be non-empty.' if a.empty?
 
-      b = a.dup
-      (0...b.ndim).to_a.each { |ax_id| b = raw_fft(b, ax_id, inverse: true, real: false) }
+      return raw_fft(a, 0, inverse: true, real: false) if a.ndim == 1
+
+      last_axis_id = a.ndim - 1
+      b = raw_fft(a, 0, inverse: true, real: false)
+      1.upto(last_axis_id) { |ax_id| b = raw_fft(b, ax_id, inverse: true, real: false) }
       b
     end
 
@@ -138,9 +144,11 @@ module Numo
       raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray)
       raise ArgumentError, 'Expect input array to be non-empty.' if a.empty?
 
+      return raw_fft(a, 0, inverse: false, real: true) if a.ndim == 1
+
       last_axis_id = a.ndim - 1
       b = raw_fft(a, last_axis_id, inverse: false, real: true)
-      (0...last_axis_id).to_a.reverse.each { |ax_id| b = raw_fft(b, ax_id, inverse: false, real: false) }
+      (last_axis_id - 1).downto(0) { |ax_id| b = raw_fft(b, ax_id, inverse: false, real: false) }
       b
     end
 
@@ -152,9 +160,11 @@ module Numo
       raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray)
       raise ArgumentError, 'Expect input array to be non-empty.' if a.empty?
 
+      return raw_fft(a, 0, inverse: true, real: true) if a.ndim == 1
+
       last_axis_id = a.ndim - 1
-      b = a.dup
-      (0...last_axis_id).to_a.each { |ax_id| b = raw_fft(b, ax_id, inverse: true, real: false) }
+      b = raw_fft(a, 0, inverse: true, real: false)
+      1.upto(last_axis_id - 1) { |ax_id| b = raw_fft(b, ax_id, inverse: true, real: false) }
       raw_fft(b, last_axis_id, inverse: true, real: true)
     end
 
