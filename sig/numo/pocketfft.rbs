@@ -1,0 +1,28 @@
+module Numo
+  module Pocketfft
+    VERSION: String
+
+    def self?.fft: (Numo::DFloat | Numo::DComplex a) -> Numo::DComplex
+    def self?.fft2: (Numo::DFloat | Numo::DComplex a) -> Numo::DComplex
+    def self?.fftn: (Numo::DFloat | Numo::DComplex a) -> Numo::DComplex
+    def self?.ifft: (Numo::DComplex a) -> Numo::DComplex
+    def self?.ifft2: (Numo::DComplex a) -> Numo::DComplex
+    def self?.ifftn: (Numo::DComplex a) -> Numo::DComplex
+    def self?.rfft: (Numo::DFloat a) -> Numo::DComplex
+    def self?.rfft2: (Numo::DFloat a) -> Numo::DComplex
+    def self?.rfftn: (Numo::DFloat a) -> Numo::DComplex
+    def self?.irfft: (Numo::DComplex a) -> Numo::DFloat
+    def self?.irfft2: (Numo::DComplex a) -> Numo::DFloat
+    def self?.irfftn: (Numo::DComplex a) -> Numo::DFloat
+    def self?.fftconvolve: (Numo::DFloat | Numo::DComplex a, Numo::DFloat | Numo::DComplex b) -> Numo::DComplex
+                         | (Numo::DFloat a, Numo::DFloat b) -> Numo::DFloat
+
+    private
+
+    def self?.ext_cfft: (untyped a) -> untyped
+    def self?.ext_icfft: (untyped a) -> untyped
+    def self?.ext_rfft: (untyped a) -> untyped
+    def self?.ext_irfft: (untyped a) -> untyped
+    def self?.raw_fft: (untyped a, Integer axis_id, inverse: bool inverse, real: bool real) -> untyped
+  end
+end

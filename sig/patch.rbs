@@ -1,0 +1,22 @@
+module Numo
+  class NArray
+    def empty?: () -> bool
+    def ndim: () -> Integer
+    def shape: () -> Array[Integer]
+    def swapaxes: (Integer, Integer) -> untyped
+  end
+
+  class DFloat < NArray
+    def *: (untyped) -> untyped
+    def []: (*untyped) -> untyped
+    def []=: (*untyped) -> untyped
+  end
+
+  class DComplex < NArray
+    def self.zeros: (*untyped) -> Numo::DComplex
+    def *: (untyped) -> untyped
+    def []: (*untyped) -> untyped
+    def []=: (*untyped) -> untyped
+    def real: () -> Numo::DFloat
+  end
+end
