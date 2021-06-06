@@ -219,8 +219,7 @@ module Numo
             b_shape = a.shape
             b_shape[-1] = n
             b = Numo::DComplex.zeros(*b_shape)
-            b_range = [true] * b.ndim
-            b_range[-1] = 0...a.shape[-1]
+            b_range = Array.new(b.ndim) { |idx| idx < b.ndim - 1 ? true : 0...a.shape[-1] }
             b[*b_range] = a
             # inverse of dft for real data
             ext_irfft(b)
