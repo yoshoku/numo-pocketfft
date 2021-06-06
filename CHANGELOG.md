@@ -1,3 +1,7 @@
+# 0.3.0
+- Add type declaration file: sig/numo/pocketfft.rbs
+- Refactor to avoid generating unnecessary arrays.
+
 # 0.2.2
 - Fix bug that caused segmentation fault due to garbage collection ([#4](https://github.com/yoshoku/numo-pocketfft/pull/4)).
 - Fix some configuration files.
