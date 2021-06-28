@@ -1,3 +1,6 @@
+# 0.3.1
+- Fix version specifier of runtime dependencies.
+
 # 0.3.0
 - Add type declaration file: sig/numo/pocketfft.rbs
 - Refactor to avoid generating unnecessary arrays.
