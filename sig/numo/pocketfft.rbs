@@ -19,10 +19,10 @@ module Numo
 
     private
 
-    def self?.ext_cfft: (untyped a) -> untyped
-    def self?.ext_icfft: (untyped a) -> untyped
-    def self?.ext_rfft: (untyped a) -> untyped
-    def self?.ext_irfft: (untyped a) -> untyped
+    def self?.ext_cfft: (Numo::DComplex a) -> Numo::DComplex
+    def self?.ext_icfft: (Numo::DComplex a) -> Numo::DComplex
+    def self?.ext_rfft: (Numo::DFloat a) -> Numo::DComplex
+    def self?.ext_irfft: (Numo::DComplex a) -> Numo::DFloat
     def self?.raw_fft: (untyped a, Integer axis_id, inverse: bool inverse, real: bool real) -> untyped
   end
 end
