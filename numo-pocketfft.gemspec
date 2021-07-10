@@ -24,11 +24,10 @@ Gem::Specification.new do |spec|
   end
 
   # Add files in submodule: https://gist.github.com/mattconnolly/5875987
-  gem_dir = __dir__ + '/'
-  `git submodule --quiet foreach pwd`.split($OUTPUT_RECORD_SEPARATOR).each do |submodule_path|
+  `git submodule --quiet foreach pwd`.split($INPUT_RECORD_SEPARATOR).each do |submodule_path|
     Dir.chdir(submodule_path) do
-      submodule_relative_path = submodule_path.sub gem_dir, ''
-      `git ls-files`.split($OUTPUT_RECORD_SEPARATOR).each do |filename|
+      submodule_relative_path = submodule_path.sub("#{__dir__}/", '')
+      `git ls-files -z`.split("\x0").select { |f| f.match?(/^*(\.md|\.c|\.h)$/) }.each do |filename|
         spec.files << "#{submodule_relative_path}/#{filename}"
       end
     end
