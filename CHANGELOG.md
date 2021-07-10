@@ -1,3 +1,7 @@
+# 0.3.2
+- Update type declaration file.
+- Remove dependent gem's type declaration file from installation files.
+
 # 0.3.1
 - Fix version specifier of runtime dependencies.
 
