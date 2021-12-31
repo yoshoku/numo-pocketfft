@@ -1,4 +1,0 @@
-[submodule "ext/numo/pocketfft/pocketfft"]
-	path = ext/numo/pocketfft/pocketfft
-	url = https://gitlab.mpcdf.mpg.de/mtr/pocketfft.git
-  ignore = dirty
