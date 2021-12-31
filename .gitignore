@@ -1,6 +1,5 @@
 /.bundle/
 /.yardoc
-/Gemfile.lock
 /_yardoc/
 /coverage/
 /doc/
@@ -8,12 +7,14 @@
 /spec/reports/
 /tmp/
 /bin/
+/node_modules/
 
 # rspec failure tracking
 .rspec_status
 
 *.swp
 *.bundle
+*.lock
 mkmf.log
 tags
 .DS_Store
