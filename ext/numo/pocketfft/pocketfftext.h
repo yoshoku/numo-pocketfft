@@ -9,6 +9,6 @@
 #include <numo/narray.h>
 #include <numo/template.h>
 
-#include "pocketfft.h"
+#include "src/pocketfft.h"
 
 #endif /* NUMO_POCKETFFT_H */

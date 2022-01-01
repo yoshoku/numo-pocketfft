@@ -28,9 +28,7 @@ end
 
 $CFLAGS = "#{$CFLAGS} -std=c99"
 
-$srcs = Dir.glob("#{$srcdir}/*.c").map { |path| File.basename(path) }
-$srcs << 'pocketfft.c'
-$INCFLAGS << " -I$(srcdir)/src"
+$srcs = Dir.glob("#{$srcdir}/**/*.c").map { |path| File.basename(path) }
 $VPATH << "$(srcdir)/src"
 
 create_makefile('numo/pocketfft/pocketfftext')
