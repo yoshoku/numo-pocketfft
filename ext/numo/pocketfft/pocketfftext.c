@@ -4,20 +4,6 @@ VALUE mNumo;
 VALUE mPocketfft;
 
 VALUE numo_pocketfft_fft(VALUE x_val, int is_forward) {
-  narray_t* x_nary;
-  double* x_pt;
-  size_t length;
-  int n_dims;
-  int n_repeats;
-  int i;
-  int res;
-  int fail;
-  double fct;
-  VALUE z_val;
-  double* z_pt;
-  narray_t* z_nary;
-  cfft_plan plan = NULL;
-
   if (CLASS_OF(x_val) != numo_cDComplex) {
     x_val = rb_funcall(numo_cDComplex, rb_intern("cast"), 1, x_val);
   }
@@ -25,29 +11,30 @@ VALUE numo_pocketfft_fft(VALUE x_val, int is_forward) {
     x_val = nary_dup(x_val);
   }
 
+  narray_t* x_nary;
   GetNArray(x_val, x_nary);
-  n_dims = NA_NDIM(x_nary);
-  length = NA_SHAPE(x_nary)[n_dims - 1];
-  x_pt = (double*)na_get_pointer_for_read(x_val);
+  int n_dims = NA_NDIM(x_nary);
+  size_t length = NA_SHAPE(x_nary)[n_dims - 1];
+  double* x_pt = (double*)na_get_pointer_for_read(x_val);
 
-  plan = make_cfft_plan(length);
+  cfft_plan plan = make_cfft_plan(length);
   if (!plan) {
     rb_raise(rb_eNoMemError, "Failed to allocate memory for plan of pocketfft.");
     return Qnil;
   }
 
-  z_val = nary_s_new_like(numo_cDComplex, x_val);
-  z_pt = (double*)na_get_pointer_for_write(z_val);
+  VALUE z_val = nary_s_new_like(numo_cDComplex, x_val);
+  double* z_pt = (double*)na_get_pointer_for_write(z_val);
+  narray_t* z_nary;
   GetNArray(z_val, z_nary);
   memset(z_pt, 0, (NA_SIZE(z_nary) * 2) * sizeof(double));
 
-  fail = 0;
-  fct = is_forward == 1 ? 1.0 : 1.0 / length;
-  n_repeats = (int)(NA_SIZE(x_nary)) / length;
-  for (i = 0; i < n_repeats; i++) {
+  int fail = 0;
+  double fct = is_forward == 1 ? 1.0 : 1.0 / length;
+  int n_repeats = (int)(NA_SIZE(x_nary)) / length;
+  for (int i = 0; i < n_repeats; i++) {
     memcpy(z_pt, x_pt, 2 * length * sizeof(double));
-    res = is_forward == 1 ? cfft_forward(plan, z_pt, fct) : cfft_backward(plan, z_pt, fct);
-    if (res != 0) {
+    if ((is_forward == 1 ? cfft_forward(plan, z_pt, fct) : cfft_backward(plan, z_pt, fct)) != 0) {
       fail = 1;
       break;
     }
@@ -62,8 +49,8 @@ VALUE numo_pocketfft_fft(VALUE x_val, int is_forward) {
   RB_GC_GUARD(x_val);
 
   if (fail) {
-    rb_raise(rb_eNoMemError, "Failed to allocate memory in function of pocketfft.");
     rb_funcall(z_val, rb_intern("free"), 0);
+    rb_raise(rb_eNoMemError, "Failed to allocate memory in function of pocketfft.");
     return Qnil;
   }
 
@@ -84,20 +71,6 @@ static VALUE numo_pocketfft_icfft(VALUE self, VALUE x_val) { return numo_pocketf
  * @!visibility private
  */
 static VALUE numo_pocketfft_rfft(VALUE self, VALUE x_val) {
-  narray_t* x_nary;
-  double* x_pt;
-  int n_dims;
-  size_t length;
-  int n_repeats;
-  int i;
-  int fail;
-  size_t* z_shape;
-  VALUE z_val;
-  narray_t* z_nary;
-  double* z_pt;
-  int z_step;
-  rfft_plan plan = NULL;
-
   if (CLASS_OF(x_val) != numo_cDFloat) {
     x_val = rb_funcall(numo_cDFloat, rb_intern("cast"), 1, x_val);
   }
@@ -105,31 +78,32 @@ static VALUE numo_pocketfft_rfft(VALUE self, VALUE x_val) {
     x_val = nary_dup(x_val);
   }
 
+  narray_t* x_nary;
   GetNArray(x_val, x_nary);
-  n_dims = NA_NDIM(x_nary);
-  length = NA_SHAPE(x_nary)[n_dims - 1];
-  x_pt = (double*)na_get_pointer_for_read(x_val);
+  int n_dims = NA_NDIM(x_nary);
+  size_t length = NA_SHAPE(x_nary)[n_dims - 1];
+  double* x_pt = (double*)na_get_pointer_for_read(x_val);
 
-  plan = make_rfft_plan(length);
+  rfft_plan plan = make_rfft_plan(length);
   if (!plan) {
     rb_raise(rb_eNoMemError, "Failed to allocate memory for plan of pocketfft.");
     return Qnil;
   }
 
-  z_shape = ALLOCA_N(size_t, n_dims);
-  for (i = 0; i < n_dims - 1; i++) {
+  size_t* z_shape = ALLOCA_N(size_t, n_dims);
+  for (int i = 0; i < n_dims - 1; i++)
     z_shape[i] = NA_SHAPE(x_nary)[i];
-  }
   z_shape[n_dims - 1] = length / 2 + 1;
-  z_val = rb_narray_new(numo_cDComplex, n_dims, z_shape);
-  z_pt = (double*)na_get_pointer_for_write(z_val);
+  VALUE z_val = rb_narray_new(numo_cDComplex, n_dims, z_shape);
+  double* z_pt = (double*)na_get_pointer_for_write(z_val);
+  narray_t* z_nary;
   GetNArray(z_val, z_nary);
   memset(z_pt, 0, (NA_SIZE(z_nary) * 2) * sizeof(double));
 
-  fail = 0;
-  z_step = (int)(NA_SHAPE(z_nary)[n_dims - 1]) * 2;
-  n_repeats = (int)(NA_SIZE(x_nary)) / length;
-  for (i = 0; i < n_repeats; i++) {
+  int fail = 0;
+  int z_step = (int)(NA_SHAPE(z_nary)[n_dims - 1]) * 2;
+  int n_repeats = (int)(NA_SIZE(x_nary)) / length;
+  for (int i = 0; i < n_repeats; i++) {
     z_pt[z_step - 1] = 0.0;
     memcpy(z_pt + 1, x_pt, length * sizeof(double));
     if (rfft_forward(plan, z_pt + 1, 1.0) != 0) {
@@ -149,8 +123,8 @@ static VALUE numo_pocketfft_rfft(VALUE self, VALUE x_val) {
   RB_GC_GUARD(x_val);
 
   if (fail) {
-    rb_raise(rb_eNoMemError, "Failed to allocate memory in function of pocketfft.");
     rb_funcall(z_val, rb_intern("free"), 0);
+    rb_raise(rb_eNoMemError, "Failed to allocate memory in function of pocketfft.");
     return Qnil;
   }
 
@@ -161,20 +135,6 @@ static VALUE numo_pocketfft_rfft(VALUE self, VALUE x_val) {
  * @!visibility private
  */
 static VALUE numo_pocketfft_irfft(VALUE self, VALUE x_val) {
-  narray_t* x_nary;
-  double* x_pt;
-  size_t length;
-  int n_dims;
-  int n_repeats;
-  int i;
-  int fail;
-  double fct;
-  size_t* z_shape;
-  VALUE z_val;
-  double* z_pt;
-  narray_t* z_nary;
-  rfft_plan plan = NULL;
-
   if (CLASS_OF(x_val) != numo_cDComplex) {
     x_val = rb_funcall(numo_cDComplex, rb_intern("cast"), 1, x_val);
   }
@@ -182,31 +142,33 @@ static VALUE numo_pocketfft_irfft(VALUE self, VALUE x_val) {
     x_val = nary_dup(x_val);
   }
 
+  narray_t* x_nary;
   GetNArray(x_val, x_nary);
-  n_dims = NA_NDIM(x_nary);
-  length = NA_SHAPE(x_nary)[n_dims - 1];
-  x_pt = (double*)na_get_pointer_for_read(x_val);
+  int n_dims = NA_NDIM(x_nary);
+  size_t length = NA_SHAPE(x_nary)[n_dims - 1];
+  double* x_pt = (double*)na_get_pointer_for_read(x_val);
 
-  plan = make_rfft_plan(length);
+  rfft_plan plan = make_rfft_plan(length);
   if (!plan) {
     rb_raise(rb_eNoMemError, "Failed to allocate memory for plan of pocketfft.");
     return Qnil;
   }
 
-  z_shape = ALLOCA_N(size_t, n_dims);
-  for (i = 0; i < n_dims - 1; i++) {
+  size_t* z_shape = ALLOCA_N(size_t, n_dims);
+  for (int i = 0; i < n_dims - 1; i++) {
     z_shape[i] = NA_SHAPE(x_nary)[i];
   }
   z_shape[n_dims - 1] = length;
-  z_val = rb_narray_new(numo_cDFloat, n_dims, z_shape);
-  z_pt = (double*)na_get_pointer_for_write(z_val);
+  VALUE z_val = rb_narray_new(numo_cDFloat, n_dims, z_shape);
+  double* z_pt = (double*)na_get_pointer_for_write(z_val);
+  narray_t* z_nary;
   GetNArray(z_val, z_nary);
   memset(z_pt, 0, NA_SIZE(z_nary) * sizeof(double));
 
-  fail = 0;
-  fct = 1.0 / length;
-  n_repeats = (int)(NA_SIZE(z_nary)) / length;
-  for (i = 0; i < n_repeats; i++) {
+  int fail = 0;
+  double fct = 1.0 / length;
+  int n_repeats = (int)(NA_SIZE(z_nary)) / length;
+  for (int i = 0; i < n_repeats; i++) {
     memcpy(z_pt + 1, x_pt + 2, (length - 1) * sizeof(double));
     z_pt[0] = x_pt[0];
     if (rfft_backward(plan, z_pt, fct) != 0) {
@@ -224,8 +186,8 @@ static VALUE numo_pocketfft_irfft(VALUE self, VALUE x_val) {
   RB_GC_GUARD(x_val);
 
   if (fail) {
-    rb_raise(rb_eNoMemError, "Failed to allocate memory in function of pocketfft.");
     rb_funcall(z_val, rb_intern("free"), 0);
+    rb_raise(rb_eNoMemError, "Failed to allocate memory in function of pocketfft.");
     return Qnil;
   }
 
