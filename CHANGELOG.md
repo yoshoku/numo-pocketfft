@@ -1,3 +1,8 @@
+# 0.4.0
+- Refactor native extension codes with C99 style.
+- Change not ot use git submodule for pocketfft codes bundle.
+- Introduce conventional commits.
+
 # 0.3.2
 - Update type declaration file.
 - Remove dependent gem's type declaration file from installation files.
