@@ -5,6 +5,6 @@ module Numo
   # Numo::Pocketfft is the module that has functions for Fourier transform.
   module Pocketfft
     # The version of Numo::Pocketfft you are using.
-    VERSION = '0.4.0'
+    VERSION = '0.4.1'
   end
 end

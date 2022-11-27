@@ -1,3 +1,6 @@
+# 0.4.1
+- Fix build failure with Xcode 14 and Ruby 3.1.x.
+
 # 0.4.0
 - Refactor native extension codes with C99 style.
 - Change not ot use git submodule for pocketfft codes bundle.
