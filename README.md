@@ -3,7 +3,7 @@
 [![Build Status](https://github.com/yoshoku/numo-pocketfft/workflows/build/badge.svg)](https://github.com/yoshoku/numo-pocketfft/actions?query=workflow%3Abuild)
 [![Gem Version](https://badge.fury.io/rb/numo-pocketfft.svg)](https://badge.fury.io/rb/numo-pocketfft)
 [![BSD 3-Clause License](https://img.shields.io/badge/License-BSD%203--Clause-orange.svg)](https://github.com/yoshoku/numo-pocketfft/blob/main/LICENSE.txt)
-[![Documentation](https://img.shields.io/badge/docs-rdoc.info-blue.svg)](https://yoshoku.github.io/numo-pocketfft/doc/)
+[![Documentation](https://img.shields.io/badge/api-reference-blue.svg)](https://yoshoku.github.io/numo-pocketfft/doc/)
 
 Numo::Pocketfft provides functions for performing descrete Fourier Transform with
 [Numo::NArray](https://github.com/ruby-numo/numo-narray) by using
