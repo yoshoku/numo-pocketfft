@@ -32,7 +32,8 @@ Gem::Specification.new do |spec|
     'changelog_uri' => "#{spec.homepage}/blob/main/CHANGELOG.md",
     'source_code_uri' => spec.homepage,
     'documentation_uri' => "https://gemdocs.org/gems/#{spec.name}/#{spec.version}/",
-    'bug_tracker_uri' => "#{spec.homepage}/issues"
+    'bug_tracker_uri' => "#{spec.homepage}/issues",
+    'rubygems_mfa_required' => 'true'
   }
 
   spec.add_runtime_dependency 'numo-narray-alt', '~> 0.9.3'
