@@ -12,6 +12,8 @@ Numo::Pocketfft provides functions for performing descrete Fourier Transform wit
 Note: There are other useful Ruby gems perform descrete Fourier Transform with Numo::NArray:
 [Numo::FFTW](https://github.com/ruby-numo/numo-fftw) and [Numo::FFTE](https://github.com/ruby-numo/numo-ffte) by Masahiro Tanaka.
 
+Note: Since v0.5.0, this library uses [Numo::NArray Alternative](https://github.com/yoshoku/numo-narray-alt) instead of Numo::NArray as a dependency.
+
 ## Installation
 
 Numo::Pocketfft bundles pocketfft codes, so there is no need to install another external library in advance.

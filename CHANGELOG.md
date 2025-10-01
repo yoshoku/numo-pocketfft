@@ -1,3 +1,9 @@
+# 0.5.0
+
+**Breaking change**
+
+- Change dependency from numo-narray to [numo-narray-alt](https://github.com/yoshoku/numo-narray-alt).
+
 # 0.4.1
 - Fix build failure with Xcode 14 and Ruby 3.1.x.
 
