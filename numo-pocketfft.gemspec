@@ -21,18 +21,18 @@ Gem::Specification.new do |spec|
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
   spec.files         = Dir.chdir(File.expand_path(__dir__)) do
     `git ls-files -z`.split("\x0").reject { |f| f.match(/^(test|spec|features|sig-deps)/) }
-                                  .select { |f| f.match(/\.(?:rb|rbs|h|c|md|txt)$/) }
+                     .select { |f| f.match(/\.(?:rb|rbs|h|c|md|txt)$/) }
   end
 
   spec.require_paths = ['lib']
   spec.extensions    = ['ext/numo/pocketfft/extconf.rb']
 
   spec.metadata      = {
-    'homepage_uri' => 'https://github.com/yoshoku/numo-pocketfft',
-    'changelog_uri' => 'https://github.com/yoshoku/numo-pocketfft/blob/main/CHANGELOG.md',
-    'source_code_uri' => 'https://github.com/yoshoku/numo-pocketfft',
-    'documentation_uri' => 'https://yoshoku.github.io/numo-pocketfft/doc/',
-    'bug_tracker_uri' => 'https://github.com/yoshoku/numo-pocketfft/issues'
+    'homepage_uri' => spec.homepage,
+    'changelog_uri' => "#{spec.homepage}/blob/main/CHANGELOG.md",
+    'source_code_uri' => spec.homepage,
+    'documentation_uri' => "https://gemdocs.org/gems/#{spec.name}/#{spec.version}/",
+    'bug_tracker_uri' => "#{spec.homepage}/issues"
   }
 
   spec.add_runtime_dependency 'numo-narray-alt', '~> 0.9.3'
