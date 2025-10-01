@@ -35,5 +35,5 @@ Gem::Specification.new do |spec|
     'bug_tracker_uri' => 'https://github.com/yoshoku/numo-pocketfft/issues'
   }
 
-  spec.add_runtime_dependency 'numo-narray', '>= 0.9.1'
+  spec.add_runtime_dependency 'numo-narray-alt', '~> 0.9.3'
 end
