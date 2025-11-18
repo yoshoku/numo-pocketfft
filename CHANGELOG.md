@@ -1,3 +1,8 @@
+# 0.5.1
+
+- Set the required version of numo-narray-alt to 0.9.9 or higher.
+- Change require statement to explicitly load numo/narray/alt.
+
 # 0.5.0
 
 **Breaking change**
