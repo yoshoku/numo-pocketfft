@@ -36,5 +36,5 @@ Gem::Specification.new do |spec|
     'rubygems_mfa_required' => 'true'
   }
 
-  spec.add_runtime_dependency 'numo-narray-alt', '~> 0.9.9'
+  spec.add_runtime_dependency 'numo-narray-alt', '>= 0.9.9', '< 0.11.0'
 end
