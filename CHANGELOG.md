@@ -1,3 +1,7 @@
+# 0.6.0
+
+- relax numo-narray-alt version constraint to >= 0.9.9, < 0.11.0.
+
 # 0.5.1
 
 - Set the required version of numo-narray-alt to 0.9.9 or higher.
