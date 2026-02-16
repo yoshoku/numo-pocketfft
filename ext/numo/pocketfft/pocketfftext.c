@@ -34,7 +34,8 @@ VALUE numo_pocketfft_fft(VALUE x_val, int is_forward) {
   int n_repeats = (int)(NA_SIZE(x_nary)) / length;
   for (int i = 0; i < n_repeats; i++) {
     memcpy(z_pt, x_pt, 2 * length * sizeof(double));
-    if ((is_forward == 1 ? cfft_forward(plan, z_pt, fct) : cfft_backward(plan, z_pt, fct)) != 0) {
+    int scss = is_forward == 1 ? cfft_forward(plan, z_pt, fct) : cfft_backward(plan, z_pt, fct);
+    if (scss != 0) {
       fail = 1;
       break;
     }
@@ -60,12 +61,16 @@ VALUE numo_pocketfft_fft(VALUE x_val, int is_forward) {
 /**
  * @!visibility private
  */
-static VALUE numo_pocketfft_cfft(VALUE self, VALUE x_val) { return numo_pocketfft_fft(x_val, 1); }
+static VALUE numo_pocketfft_cfft(VALUE self, VALUE x_val) {
+  return numo_pocketfft_fft(x_val, 1);
+}
 
 /**
  * @!visibility private
  */
-static VALUE numo_pocketfft_icfft(VALUE self, VALUE x_val) { return numo_pocketfft_fft(x_val, 0); }
+static VALUE numo_pocketfft_icfft(VALUE self, VALUE x_val) {
+  return numo_pocketfft_fft(x_val, 0);
+}
 
 /**
  * @!visibility private
@@ -91,8 +96,9 @@ static VALUE numo_pocketfft_rfft(VALUE self, VALUE x_val) {
   }
 
   size_t* z_shape = ALLOCA_N(size_t, n_dims);
-  for (int i = 0; i < n_dims - 1; i++)
+  for (int i = 0; i < n_dims - 1; i++) {
     z_shape[i] = NA_SHAPE(x_nary)[i];
+  }
   z_shape[n_dims - 1] = length / 2 + 1;
   VALUE z_val = rb_narray_new(numo_cDComplex, n_dims, z_shape);
   double* z_pt = (double*)na_get_pointer_for_write(z_val);
@@ -194,7 +200,7 @@ static VALUE numo_pocketfft_irfft(VALUE self, VALUE x_val) {
   return z_val;
 }
 
-void Init_pocketfftext() {
+void Init_pocketfftext(void) {
   rb_require("numo/narray");
 
   mNumo = rb_define_module("Numo");
