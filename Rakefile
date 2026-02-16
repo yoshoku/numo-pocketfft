@@ -1,7 +1,15 @@
 require 'bundler/gem_tasks'
 require 'rspec/core/rake_task'
 
-RSpec::Core::RakeTask.new(:spec)
+RSpec::Core::RakeTask.new(spec: :compile)
+if ENV['BUNDLE_WITH'] == 'memcheck'
+  require 'ruby_memcheck'
+  require 'ruby_memcheck/rspec/rake_task'
+
+  namespace :spec do
+    RubyMemcheck::RSpec::RakeTask.new(valgrind: :compile)
+  end
+end
 
 require 'rake/extensiontask'
 
@@ -13,4 +21,3 @@ Rake::ExtensionTask.new('pocketfftext') do |ext|
 end
 
 task :default => [:clobber, :compile, :spec]
-
