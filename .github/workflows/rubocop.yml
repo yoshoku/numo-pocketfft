@@ -19,4 +19,6 @@ jobs:
           ruby-version: 3.4
           bundler-cache: true
       - name: Run RuboCop
-        run: bundle exec rubocop
+        run: |
+          bundle add rubocop-rubycw
+          bundle exec rubocop
