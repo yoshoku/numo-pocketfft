@@ -15,7 +15,7 @@ end
 
 require 'rake/extensiontask'
 
-task build: :compile
+task build: :compile # rubocop:disable Rake/Desc
 
 Rake::ExtensionTask.new('pocketfftext') do |ext|
   ext.ext_dir = 'ext/numo/pocketfft'
