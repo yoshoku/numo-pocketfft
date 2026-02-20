@@ -1,0 +1,50 @@
+plugins:
+  - rubocop-performance
+  - rubocop-rake
+  - rubocop-rspec
+
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 2.7
+  DisplayCopNames: true
+  DisplayStyleGuide: true
+  Exclude:
+    - Steepfile
+
+Gemspec/RequiredRubyVersion:
+  Enabled: false
+
+Layout/LineLength:
+  Max: 120
+  AllowedPatterns: ['(\A|\s)#']
+
+Metrics/AbcSize:
+  Max: 40
+
+Metrics/BlockNesting:
+  Max: 4
+
+Metrics/CyclomaticComplexity:
+  Max: 16
+
+Metrics/MethodLength:
+  Max: 32
+
+Metrics/PerceivedComplexity:
+  Max: 16
+
+Naming/MethodParameterName:
+  Enabled: false
+
+Style/GlobalVars:
+  Exclude:
+    - ext/numo/pocketfft/extconf.rb
+
+RSpec/ExampleLength:
+  Max: 16
+
+RSpec/MultipleExpectations:
+  Max: 4
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 8
