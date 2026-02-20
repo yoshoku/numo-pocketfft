@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'numo/pocketfft/version'
@@ -21,7 +23,7 @@ Gem::Specification.new do |spec|
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
   spec.files         = Dir.chdir(File.expand_path(__dir__)) do
     `git ls-files -z`.split("\x0").reject { |f| f.match(/^(test|spec|features|sig-deps)/) }
-                     .select { |f| f.match(/\.(?:rb|rbs|h|c|md|txt)$/) }
+                                  .select { |f| f.match(/\.(?:rb|rbs|h|c|md|txt)$/) }
   end
 
   spec.require_paths = ['lib']
@@ -36,5 +38,5 @@ Gem::Specification.new do |spec|
     'rubygems_mfa_required' => 'true'
   }
 
-  spec.add_runtime_dependency 'numo-narray-alt', '>= 0.9.9', '< 0.11.0'
+  spec.add_dependency 'numo-narray-alt', '>= 0.9.9', '< 0.11.0'
 end

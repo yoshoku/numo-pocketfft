@@ -5,7 +5,7 @@ require 'numo/pocketfft/version'
 require 'numo/pocketfft/pocketfftext'
 
 module Numo
-  module Pocketfft
+  module Pocketfft # rubocop:disable Metrics/ModuleLength, Style/Documentation
     module_function
 
     # Compute the 1-dimensional discrete Fourier Transform.
@@ -189,22 +189,26 @@ module Numo
     # @param b [Numo::DFloat/Numo::DComplex] Second input array with the same number of dimensions as first input array.
     # @raise [ArgumentError] This error is raised if input arrays are not Numo::NArray, are not the same dimensionality, or are empty.
     # @return [Numo::DFloat/Numo::DComplex] The discrete linear convolution of 'a' with 'b'.
-    def fftconvolve(a, b)
-      raise ArgumentError, 'Expect class of input array to be Numo::NArray.' unless a.is_a?(Numo::NArray) && b.is_a?(Numo::NArray)
+    def fftconvolve(a, b) # rubocop:disable Metrics/AbcSize
+      unless a.is_a?(Numo::NArray) && b.is_a?(Numo::NArray)
+        raise ArgumentError, 'Expect class of input array to be Numo::NArray.'
+      end
       raise ArgumentError, 'Expect input array to be non-empty.' if a.empty? || b.empty?
       raise ArgumentError, 'Input arrays should have the same dimensionarity' if a.ndim != b.ndim
 
       ashp = a.shape
       bshp = b.shape
 
-      return a * b if (ashp + bshp).all? { |el| el == 1 }
+      return a * b if (ashp + bshp).all?(1)
 
       retshp = Array.new(a.ndim) { |n| ashp[n] + bshp[n] - 1 }
       a_zp = Numo::DComplex.zeros(*retshp).tap { |arr| arr[*ashp.map { |n| 0...n }] = a }
       b_zp = Numo::DComplex.zeros(*retshp).tap { |arr| arr[*bshp.map { |n| 0...n }] = b }
       ret = ifftn(fftn(a_zp) * fftn(b_zp))
 
-      return ret if a.is_a?(Numo::DComplex) || a.is_a?(Numo::SComplex) || b.is_a?(Numo::DComplex) || b.is_a?(Numo::SComplex)
+      if a.is_a?(Numo::DComplex) || a.is_a?(Numo::SComplex) || b.is_a?(Numo::DComplex) || b.is_a?(Numo::SComplex)
+        return ret
+      end
 
       ret.real
     end
@@ -226,19 +230,15 @@ module Numo
           else
             ext_rfft(a)
           end
+        elsif inverse
+          ext_icfft(a)
         else
-          if inverse
-            ext_icfft(a)
-          else
-            ext_cfft(a)
-          end
+          ext_cfft(a)
         end
+      elsif inverse
+        ext_icfft(a.swapaxes(axis_id, -1)).swapaxes(axis_id, -1).dup
       else
-        if inverse
-          ext_icfft(a.swapaxes(axis_id, -1)).swapaxes(axis_id, -1).dup
-        else
-          ext_cfft(a.swapaxes(axis_id, -1)).swapaxes(axis_id, -1).dup
-        end
+        ext_cfft(a.swapaxes(axis_id, -1)).swapaxes(axis_id, -1).dup
       end
     end
 

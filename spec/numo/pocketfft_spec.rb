@@ -3,14 +3,14 @@
 RSpec.describe Numo::Pocketfft do
   let(:tol) { 1.0e-10 }
   let(:vec_dflt) { Numo::DFloat.new(30).rand }
-  let(:vec_dcmp) { Numo::DFloat.new(30).rand + Complex::I * Numo::DFloat.new(30).rand }
+  let(:vec_dcmp) { Numo::DFloat.new(30).rand + (Complex::I * Numo::DFloat.new(30).rand) }
   let(:mat_dflt) { Numo::DFloat.new(30, 20).rand }
-  let(:mat_dcmp) { Numo::DFloat.new(30, 20).rand + Complex::I * Numo::DFloat.new(30, 20).rand }
+  let(:mat_dcmp) { Numo::DFloat.new(30, 20).rand + (Complex::I * Numo::DFloat.new(30, 20).rand) }
   let(:tns_dflt) { Numo::DFloat.new(30, 20, 10).rand }
-  let(:tns_dcmp) { Numo::DFloat.new(30, 20, 10).rand + Complex::I * Numo::DFloat.new(30, 20, 10).rand }
+  let(:tns_dcmp) { Numo::DFloat.new(30, 20, 10).rand + (Complex::I * Numo::DFloat.new(30, 20, 10).rand) }
 
   it 'has a version number' do
-    expect(Numo::Pocketfft::VERSION).not_to be nil
+    expect(Numo::Pocketfft::VERSION).not_to be_nil
   end
 
   describe 'fft' do
@@ -323,7 +323,7 @@ RSpec.describe Numo::Pocketfft do
     end
 
     it 'computes convolution of 1-d complex array' do
-      arr = Numo::DFloat[1, 2, 3] + Complex::I * Numo::DFloat[1, 2, 3]
+      arr = Numo::DFloat[1, 2, 3] + (Complex::I * Numo::DFloat[1, 2, 3])
       cnv = described_class.fftconvolve(arr, arr)
       exp = Complex::I * Numo::DFloat[2, 8, 20, 24, 18]
       err = (exp - cnv).abs.sum
@@ -348,10 +348,10 @@ RSpec.describe Numo::Pocketfft do
     end
 
     it 'computes convolution of 2-d complex array' do
-      arr = Numo::DFloat[[1, 3, 5], [2, 4, 6]] + Complex::I * Numo::DFloat[[2, 4, 6], [1, 3, 5]]
+      arr = Numo::DFloat[[1, 3, 5], [2, 4, 6]] + (Complex::I * Numo::DFloat[[2, 4, 6], [1, 3, 5]])
       cnv = described_class.fftconvolve(arr, arr)
       exp = Numo::DFloat[[-3, -10, -21, -18, -11], [0, 0, 0, 0, 0], [3, 10, 21, 18, 11]] +
-            Complex::I * Numo::DFloat[[4, 20, 56, 76, 60], [10, 44, 118, 156, 122], [4, 20, 56, 76, 60]]
+            (Complex::I * Numo::DFloat[[4, 20, 56, 76, 60], [10, 44, 118, 156, 122], [4, 20, 56, 76, 60]])
       err = (exp - cnv).abs.sum
       expect(err).to be <= tol
     end
@@ -378,8 +378,12 @@ RSpec.describe Numo::Pocketfft do
     end
 
     it 'raises ArgumentError when given arrays of different dimensions' do
-      expect { described_class.fftconvolve(Numo::DFloat[1, 2], Numo::DFloat[[1, 2], [3, 4]]) }.to raise_error(ArgumentError)
-      expect { described_class.fftconvolve(Numo::DFloat[[1, 2], [3, 4]], Numo::DFloat[1, 2]) }.to raise_error(ArgumentError)
+      expect do
+        described_class.fftconvolve(Numo::DFloat[1, 2], Numo::DFloat[[1, 2], [3, 4]])
+      end.to raise_error(ArgumentError)
+      expect do
+        described_class.fftconvolve(Numo::DFloat[[1, 2], [3, 4]], Numo::DFloat[1, 2])
+      end.to raise_error(ArgumentError)
     end
   end
 end
