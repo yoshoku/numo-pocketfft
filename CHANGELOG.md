@@ -1,3 +1,7 @@
+# 0.7.0
+
+- relax numo-narray-alt upper bound to < 0.12.0.
+
 # 0.6.0
 
 - relax numo-narray-alt version constraint to >= 0.9.9, < 0.11.0.
